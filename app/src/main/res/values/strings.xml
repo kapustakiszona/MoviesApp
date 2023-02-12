@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MoviesApp</string>
+    <string name="film_description">A family heads to an isolated hotel for the winter where a sinister presence influences the father into violence, while his psychic son sees horrific forebodings from both past and future.</string>
+    <string name="film_name">The Shining</string>
+    <string name="date">1980</string>
+    <string name="rating">8.4</string>
+    <string name="id">id12345</string>
 </resources>
