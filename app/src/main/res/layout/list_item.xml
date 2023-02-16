@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="@color/material_dynamic_neutral60"
+    android:background="#DEE9F4"
     android:padding="4dp">
 
     <ImageView
@@ -21,63 +21,29 @@
 
     <TextView
         android:id="@+id/name_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="casual"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/image_title_iv"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Test Name" />
-
-    <TextView
-        android:id="@+id/description_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ellipsize="end"
-        android:maxLines="5"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@id/image_title_iv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/image_title_iv"
-        app:layout_constraintTop_toBottomOf="@id/name_title_tv"
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do" />
+
 
     <TextView
         android:id="@+id/date_publication_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#212121"
-        android:textSize="12sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/image_title_iv"
         app:layout_constraintTop_toBottomOf="@id/image_title_iv"
         tools:text="2005" />
 
-    <TextView
-        android:id="@+id/rating_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#212121"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/image_title_iv"
-        app:layout_constraintTop_toBottomOf="@id/image_title_iv"
-        tools:text="10/10" />
-
-    <TextView
-        android:id="@+id/id_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#212121"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="123456" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

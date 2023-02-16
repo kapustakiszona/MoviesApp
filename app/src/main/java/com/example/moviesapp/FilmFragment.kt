@@ -1,34 +1,38 @@
 package com.example.moviesapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.moviesapp.databinding.FilmFragmentBinding
 
 class FilmFragment : Fragment() {
 
-
-    private val viewModel: FilmViewModel by viewModels()
-
+    private lateinit var binding: FilmFragmentBinding
+    private val filmDatasource = FilmDatasource()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.film_fragment, container, false)
+    ): View {
+        binding = FilmFragmentBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        val adapter = FilmAdapter(viewModel.filmList)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+        binding = FilmFragmentBinding.bind(view)
+
+        val adapter = FilmAdapter(filmDatasource.filmList)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        Log.d("FilmFragment", "LIST SIZE IS ${FilmDatasource().filmList.size}")
 
     }
+
 }
 
