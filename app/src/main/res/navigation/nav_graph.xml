@@ -9,5 +9,18 @@
         android:id="@+id/filmFragment"
         android:name="com.example.moviesapp.FilmFragment"
         android:label="film_fragment"
-        tools:layout="@layout/film_fragment" />
+        tools:layout="@layout/film_fragment" >
+        <action
+            android:id="@+id/action_filmFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.moviesapp.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="film"
+            app:argType="com.example.moviesapp.Film" />
+    </fragment>
 </navigation>
