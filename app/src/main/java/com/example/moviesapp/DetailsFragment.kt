@@ -13,7 +13,8 @@ class DetailsFragment : Fragment() {
 
     private val args: DetailsFragmentArgs by navArgs()
     private lateinit var binding: FragmentDetailsBinding
-
+    private lateinit var actorListAdapter: ActorAdapter
+    private lateinit var actorsList: ArrayList<Actor>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,13 +25,27 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentDetailsBinding.bind(view)
+        actorsList = args.film.getActorsList()
+        setActorsListAdapter(actorsList)
+
 
         with(binding) {
-            detailRatingTv.text = args.film.rating.toString()
+            ratingBar?.rating = args.film.rating.div(2)
             detailPosterIv.setImageResource(args.film.photo)
             detailNameTv.text = args.film.name
             detailDescriptionTv.text = args.film.description
             detailDateTv.text = args.film.date_publication
+            genreChip?.text = args.film.genre
+            ageDetailRatingTv?.text = args.film.rating.toString()
+
         }
     }
+
+
+    private fun setActorsListAdapter(list: ArrayList<Actor>) {
+        actorListAdapter = ActorAdapter(list)
+        binding.actorsRecyclerView?.adapter = actorListAdapter
+
+    }
+
 }
