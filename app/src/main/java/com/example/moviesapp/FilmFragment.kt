@@ -23,7 +23,7 @@ class FilmFragment : Fragment(), AdapterListener {
     private lateinit var binding: FilmFragmentBinding
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var adapterFilm: FilmAdapter
-    private lateinit var films: ArrayList<Film>
+    private lateinit var adapterChip: ChipAdapter
 
 
     override fun onCreateView(
@@ -38,15 +38,15 @@ class FilmFragment : Fragment(), AdapterListener {
         super.onViewCreated(view, savedInstanceState)
         binding = FilmFragmentBinding.bind(view)
         toolbar = binding.toolbar
+        getListFromJson()
+        filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
+            setAdapter(filmViewModel.showFilmList(it))
+        }
 
         filmViewModel.chipList.observe(viewLifecycleOwner) {
-            val adapterChip = ChipAdapter(it, this)
+            adapterChip = ChipAdapter(it, this)
             binding.chipRecyclerView.adapter = adapterChip
         }
-        filmViewModel.filmList.observe(viewLifecycleOwner) {
-            setAdapter(it)
-        }
-        films = getListFromJson()
         searchQuery()
     }
 
@@ -56,13 +56,14 @@ class FilmFragment : Fragment(), AdapterListener {
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-    private fun getListFromJson(): ArrayList<Film> {
+    private fun getListFromJson() {
         val jsonFileString = getJsonDataFromAsset(requireContext(), "json_data.json")
         val gson = Gson()
         val filmListType = object : TypeToken<ArrayList<Film>>() {}.type
         val films: ArrayList<Film> = gson.fromJson(jsonFileString, filmListType)
+        Log.d("FilmFragment", " Film list size in init fun ${films.size}")
         setAdapter(films)
-        return films
+        filmViewModel.setupFilmList(films)
     }
 
     private fun searchQuery() {
@@ -81,31 +82,9 @@ class FilmFragment : Fragment(), AdapterListener {
         })
     }
 
-    private fun chipSorting(list: List<Chip>) {
-        val genreList: ArrayList<String> = ArrayList()
-        for (item in list) {
-            if (item.state) {
-                genreList.add(item.name)
-            }
-        }
-        chipsFilter(genreList)
-    }
-
-
-    private fun chipsFilter(list: ArrayList<String>) {
-        val genreSortedList: ArrayList<Film> = arrayListOf()
-        films.filterTo(genreSortedList) { it.genre in list }
-        filmViewModel.setFilteredFilmList(genreSortedList)
-        if (genreSortedList.isEmpty()) {
-            setAdapter(films)
-        } else {
-            setAdapter(filmViewModel.filmList.value as ArrayList<Film>)
-        }
-    }
-
     fun search(text: String) {
         val filterList: ArrayList<Film> = ArrayList()
-        for (item in films) {
+        for (item in filmViewModel.filteredFilmList.value!!) {
 
             if (item.name.lowercase().contains(text.lowercase())) {
                 filterList.add(item)
@@ -125,10 +104,7 @@ class FilmFragment : Fragment(), AdapterListener {
     }
 
     override fun onClick(myChip: Chip) {
-        myChip.state = myChip.state.not()
-        filmViewModel.setChipState(myChip)
-        chipSorting(filmViewModel.chipList.value!!)
-
+        filmViewModel.toggleChipsState(myChip)
     }
 
 
