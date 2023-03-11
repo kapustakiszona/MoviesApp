@@ -1,5 +1,6 @@
 package com.example.moviesapp
 
+
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation.findNavController
@@ -21,9 +23,9 @@ class FilmFragment : Fragment(), AdapterListener {
 
     private val filmViewModel by viewModels<FilmsViewModel>()
     private lateinit var binding: FilmFragmentBinding
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
-    private lateinit var adapterFilm: FilmAdapter
-    private lateinit var adapterChip: ChipAdapter
+
+    private val adapterFilm = FilmAdapter(emptyList(), this)
+    private val adapterChip = ChipAdapter(emptyList(), this)
 
 
     override fun onCreateView(
@@ -36,24 +38,55 @@ class FilmFragment : Fragment(), AdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FilmFragmentBinding.bind(view)
-        toolbar = binding.toolbar
+        initUi()
+        initVM()
         getListFromJson()
-        filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
-            setAdapter(filmViewModel.showFilmList(it))
-        }
-
-        filmViewModel.chipList.observe(viewLifecycleOwner) {
-            adapterChip = ChipAdapter(it, this)
-            binding.chipRecyclerView.adapter = adapterChip
-        }
-        searchQuery()
     }
 
-    private fun setAdapter(list: ArrayList<Film>) {
-        adapterFilm = FilmAdapter(list, this)
-        binding.recyclerView.adapter = adapterFilm
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+    private fun initUi() {
+        with(binding) {
+            recyclerView.apply {
+                adapter = adapterFilm
+                layoutManager = GridLayoutManager(requireContext(), 2)
+            }
+            chipRecyclerView.apply {
+                adapter = adapterChip
+            }
+            searchView.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    filmViewModel.setSearchQuery(s.toString())
+                    searchView.clearFocus()
+                }
+            })
+        }
+    }
+
+    private fun initVM() {
+        filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
+            adapterFilm.filmList = it
+            showEmptyListPlaceholder(it)
+            Log.d("FilmFragment", " vm film list size ${it.size}")
+            adapterFilm.notifyDataSetChanged()
+        }
+        filmViewModel.chipList.observe(viewLifecycleOwner) {
+            adapterChip.chipsList = it
+            adapterChip.notifyDataSetChanged()
+        }
+    }
+
+    private fun showEmptyListPlaceholder(filmList: ArrayList<Film>) {
+        binding.placeholderTv.isGone = filmList.isNotEmpty()
     }
 
     private fun getListFromJson() {
@@ -61,41 +94,11 @@ class FilmFragment : Fragment(), AdapterListener {
         val gson = Gson()
         val filmListType = object : TypeToken<ArrayList<Film>>() {}.type
         val films: ArrayList<Film> = gson.fromJson(jsonFileString, filmListType)
-        Log.d("FilmFragment", " Film list size in init fun ${films.size}")
-        setAdapter(films)
         filmViewModel.setupFilmList(films)
     }
 
-    private fun searchQuery() {
-        binding.searchView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                search(s.toString())
-                binding.searchView.clearFocus()
-            }
-
-        })
-    }
-
-    fun search(text: String) {
-        val filterList: ArrayList<Film> = ArrayList()
-        for (item in filmViewModel.filteredFilmList.value!!) {
-
-            if (item.name.lowercase().contains(text.lowercase())) {
-                filterList.add(item)
-            }
-        }
-        //update recyclerview
-        setAdapter(filterList)
-        Log.d("FilmFragment", " search filterlist ${filterList.size}")
-    }
-
-    override fun onClick(film: Film) {
+    override fun onFilmSelected(film: Film) {
         findNavController(binding.root).navigate(
             FilmFragmentDirections.actionFilmFragmentToDetailsFragment(
                 film
@@ -103,7 +106,7 @@ class FilmFragment : Fragment(), AdapterListener {
         )
     }
 
-    override fun onClick(myChip: Chip) {
+    override fun onChipSelected(myChip: Chip) {
         filmViewModel.toggleChipsState(myChip)
     }
 

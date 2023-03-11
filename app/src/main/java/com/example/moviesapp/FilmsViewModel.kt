@@ -33,24 +33,38 @@ class FilmsViewModel : ViewModel() {
             name = it,
         )
     })
-    val chipList: LiveData<List<Chip>> get() = _chipList  //тут храним акктуальный список чипсов с акктуальными статусами
+    val chipList: LiveData<List<Chip>>  = _chipList  //тут храним акктуальный список чипсов с акктуальными статусами
+
+    private val _searchQueryString = MutableLiveData<String>(null)
+    val searchQueryString: LiveData<String> = _searchQueryString
+    fun setSearchQuery(query: String) {
+        _searchQueryString.value = query
+    }
 
     private val _filmList = MutableLiveData<ArrayList<Film>>()
 
     private val mFilteredFilmList = MediatorLiveData<ArrayList<Film>>().apply {
         addSource(chipList) {
-            value = mergeFilteredFilmList(chipsList = it, filmsList = _filmList.value)
+            value = mergeFilteredFilmList(
+                chipsList = it,
+                filmsList = _filmList.value,
+                searchQuery = searchQueryString.value
+            )
         }
         addSource(_filmList) {
-            value = mergeFilteredFilmList(chipsList = chipList.value, filmsList = it)
+            value = mergeFilteredFilmList(
+                chipsList = chipList.value,
+                filmsList = it,
+                searchQuery = searchQueryString.value
+            )
         }
-    }
-
-    fun showFilmList(filteredFilmList: ArrayList<Film>): ArrayList<Film> {
-        return if (filteredFilmList.isEmpty())
-            _filmList.value!!
-        else
-            filteredFilmList
+        addSource(searchQueryString) {
+            value = mergeFilteredFilmList(
+                chipsList = chipList.value,
+                filmsList = _filmList.value,
+                searchQuery = it
+            )
+        }
     }
 
     val filteredFilmList: LiveData<java.util.ArrayList<Film>> =
@@ -58,17 +72,14 @@ class FilmsViewModel : ViewModel() {
 
     private fun mergeFilteredFilmList(
         chipsList: List<Chip>?,
-        filmsList: ArrayList<Film>?
+        filmsList: ArrayList<Film>?,
+        searchQuery: String?
     ): ArrayList<Film> {
-        val genreList: ArrayList<String> = ArrayList()
-        for (item in chipsList!!) {
-            if (item.state) {
-                genreList.add(item.name)
-            }
-        }
-        val filteredFilmList: ArrayList<Film> = arrayListOf()
-        filmsList?.filterTo(filteredFilmList) { it.genre in genreList }
-        return filteredFilmList
+        val listOfSelectedChips = chipsList.orEmpty().filter { it.state }.map { it.name }
+        return ArrayList(
+            filmsList.orEmpty()
+                .filter { listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(it.genre) }
+                .filter { it.name.contains(searchQuery.orEmpty(), true) })
     }
 
     fun setupFilmList(filmList: ArrayList<Film>) {// Сюда кладем загруженный из файла список фильмов,

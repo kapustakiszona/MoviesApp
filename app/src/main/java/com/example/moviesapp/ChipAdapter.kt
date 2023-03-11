@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.databinding.ChipsItemBinding
 
 class ChipAdapter(
-    private val chipsList: List<Chip>,
+    var chipsList: List<Chip>,
     private val listener: AdapterListener
 ) :
     RecyclerView.Adapter<ChipAdapter.ChipViewHolder>() {
@@ -18,7 +18,7 @@ class ChipAdapter(
             chip.text = myChip.name
             chip.isChecked = myChip.state
             chip.setOnClickListener {
-                listener.onClick(myChip)
+                listener.onChipSelected(myChip)
             }
         }
     }

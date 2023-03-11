@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.databinding.ListItemBinding
 
 class FilmAdapter(
-    private var filmList: List<Film>,
+    var filmList: List<Film>,
     private val listener: AdapterListener
 ) :
     RecyclerView.Adapter<FilmAdapter.FilmViewHolder>() {
@@ -21,7 +21,7 @@ class FilmAdapter(
             ageRatingTv.text = film.id.toString()
             ratingBar.rating = film.rating.div(2)
             itemView.setOnClickListener {
-                listener.onClick(film)
+                listener.onFilmSelected(film)
             }
         }
     }
@@ -45,7 +45,6 @@ class FilmAdapter(
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
         holder.bind(filmList[position], listener)
     }
-
 
 
 }

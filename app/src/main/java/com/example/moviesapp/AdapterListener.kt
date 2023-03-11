@@ -1,9 +1,9 @@
 package com.example.moviesapp
 
 interface AdapterListener {
-    fun onClick(film: Film)
+    fun onFilmSelected(film: Film)
 
-    fun onClick(myChip: Chip)
+    fun onChipSelected(myChip: Chip)
 
 
 }

@@ -4,5 +4,6 @@
     <string name="search">Поиск</string>
     <string name="toolbar_textview">Популярное сейчас</string>
     <string name="actors">Актеры</string>
+    <string name="placeholder_string">Ничего не найдено</string>
 
 </resources>
