@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ChipDetailsStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="DateTextViewDetailsStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">14dp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ActorNameTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

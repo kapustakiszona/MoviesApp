@@ -1,49 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="#DEE9F4"
-    android:padding="4dp">
+    android:layout_width="wrap_content"
+    android:layout_height="385dp"
+    android:layout_gravity="center"
+    android:layout_margin="25dp"
+    app:cardBackgroundColor="@color/primaryColor"
+    app:cardCornerRadius="15dp">
 
-    <ImageView
-        android:id="@+id/image_title_iv"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/the_shining" />
-
-    <TextView
-        android:id="@+id/name_title_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="casual"
-        android:textColor="@color/black"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/image_title_iv"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do" />
-
-
-    <TextView
-        android:id="@+id/date_publication_tv"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#212121"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/image_title_iv"
-        app:layout_constraintTop_toBottomOf="@id/image_title_iv"
-        tools:text="2005" />
+
+        android:layout_height="match_parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/poster_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="216dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerRadius"
+            tools:src="@drawable/the_shining" />
+
+        <TextView
+            android:id="@+id/name_title_tv"
+            style="@style/TitleTextViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/poster_iv"
+            tools:text="Гнев человеческий" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/description_tv"
+            style="@style/DescriptionTextVieStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/name_title_tv"
+            tools:text="Эйч — загадочный и холодный на вид джентльмен, но внутри него пылает жажда справедливости. Преследуя..." />
+
+        <TextView
+            android:id="@+id/age_rating_tv"
+            style="@style/ShapeTextViewStyle"
+            android:layout_width="20.5dp"
+            android:layout_height="20.5dp"
+            android:layout_marginBottom="2.2dp"
+            android:background="@drawable/shape"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            tools:text="18+" />
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            style="@style/CustomRatingBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:isIndicator="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_start" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="3dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="3dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

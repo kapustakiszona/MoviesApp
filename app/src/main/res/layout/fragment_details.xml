@@ -1,85 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsFragment">
+    android:background="@color/primaryColor">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
+        android:id="@+id/detail_poster_iv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/the_shining"
+        tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/detail_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="casual"
-            android:paddingStart="20dp"
-            android:textColor="@color/black"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/detail_poster_iv"
-            tools:ignore="RtlSymmetry"
-            tools:text="The Shining" />
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardCornerRadius="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline">
 
-        <ImageView
-            android:id="@+id/detail_poster_iv"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_lt"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/the_shining" />
+            android:layout_height="match_parent"
+            android:background="@color/primaryColor">
 
-        <TextView
-            android:id="@+id/detail_rating_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:paddingEnd="10dp"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/detail_poster_iv"
-            tools:ignore="RtlSymmetry"
-            tools:text="8" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/genre_chip"
+                style="@style/ChipDetailsStyle"
+                app:chipMinHeight="18dp"
+                app:chipStrokeColor="@color/black"
+                app:chipStrokeWidth="1dp"
+                app:layout_constraintBottom_toTopOf="@id/guideline_top"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="боевик" />
 
-        <TextView
-            android:id="@+id/detail_date_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/detail_name_tv"
-            app:layout_constraintStart_toStartOf="@id/detail_name_tv"
-            app:layout_constraintTop_toBottomOf="@id/detail_name_tv"
-            tools:text="1980" />
+            <TextView
+                android:id="@+id/detail_date_tv"
+                style="@style/DateTextViewDetailsStyle"
+                app:layout_constraintBottom_toTopOf="@id/guideline_top"
+                app:layout_constraintStart_toEndOf="@id/genre_chip"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="22.04.2021" />
 
-        <TextView
-            android:id="@+id/detail_description_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="serif"
-            android:padding="6dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/detail_date_tv"
-            tools:text="@string/lorem" />
+            <TextView
+                android:id="@+id/age_detail_rating_tv"
+                style="@style/ShapeTextViewDetailsStyle"
+                android:layout_width="41dp"
+                android:layout_height="41dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="18+" />
 
-        <TextView
-            android:id="@+id/id_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="AAAA" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="42dp" />
+
+            <TextView
+                android:id="@+id/detail_name_tv"
+                style="@style/TitleDetailsStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/guideline_top"
+                tools:text="Гнев человеческий" />
+
+            <RatingBar
+                android:id="@+id/rating_bar"
+                style="@style/CustomRatingBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:isIndicator="true"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/detail_name_tv" />
+
+            <TextView
+                android:id="@+id/detail_description_tv"
+                style="@style/DescriptionTextViewDetailsStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="@id/constraint_lt"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/rating_bar"
+                tools:text="Эйч — загадочный и холодный на вид джентльмен, но внутри него пылает жажда справедливости. Преследуя свои мотивы, он внедряется в инкассаторскую компанию, чтобы выйти на соучастников серии многомиллионных ограблений, потрясших Лос-Анджелес. В этой запутанной игре у каждого своя роль, но под подозрением оказываются все. Виновных же обязательно постигнет гнев человеческий." />
+
+            <TextView
+                android:id="@+id/actors_tv"
+                style="@style/ActorsDetailsTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/actors"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/detail_description_tv" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/actors_tv">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/actors_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/actor_item"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="260dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
