@@ -5,7 +5,38 @@
     "date_publication": "2006",
     "rating": 6,
     "description": "Impedit praesentium et aperiam ut voluptatem perspiciatis voluptatem earum eaque.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "триллер",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 2,
@@ -13,7 +44,38 @@
     "date_publication": "2014",
     "rating": 3,
     "description": "Eum in aut consequatur omnis vel quo odio non ut corporis distinctio ipsum.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "детектив",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 3,
@@ -21,7 +83,38 @@
     "date_publication": "1993",
     "rating": 9,
     "description": "Cupiditate possimus excepturi dolores velit et dolor facilis ratione quaerat aut tempore.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "семейный",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 4,
@@ -29,7 +122,38 @@
     "date_publication": "1993",
     "rating": 8,
     "description": "Illum et consequatur saepe sit illum velit sapiente nam dolorum hic voluptas.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "триллер",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 5,
@@ -37,7 +161,38 @@
     "date_publication": "2001",
     "rating": 8,
     "description": "Iure possimus quis autem consectetur excepturi sint quia sit eius quo vero dolorem.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "мультфильм",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 6,
@@ -45,7 +200,38 @@
     "date_publication": "2007",
     "rating": 5,
     "description": "Saepe adipisci voluptatem pariatur qui rerum alias est est itaque modi ut blanditiis sequi est.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "криминал",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 7,
@@ -53,7 +239,38 @@
     "date_publication": "2005",
     "rating": 7,
     "description": "Et maxime provident magni et illum asperiores enim numquam praesentium iusto sint temporibus rerum consequatur.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "военный",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 8,
@@ -61,7 +278,38 @@
     "date_publication": "2006",
     "rating": 2,
     "description": "Consequuntur doloribus occaecati sed laudantium architecto ducimus et rem quis doloremque molestias ratione.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "комедия",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 9,
@@ -69,7 +317,38 @@
     "date_publication": "2001",
     "rating": 3,
     "description": "Sit est fuga voluptatem et et voluptatem incidunt illum voluptatem quae dolorum suscipit nostrum quia.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "музыка",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 10,
@@ -77,7 +356,38 @@
     "date_publication": "2000",
     "rating": 9,
     "description": "Ut officiis atque totam eligendi ut labore corrupti fuga est aut consectetur excepturi autem aut.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "история",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 11,
@@ -85,7 +395,38 @@
     "date_publication": "1992",
     "rating": 9,
     "description": "Excepturi occaecati sint et optio voluptates architecto non aliquid tenetur illo sunt.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "фантастика",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 12,
@@ -93,7 +434,38 @@
     "date_publication": "2018",
     "rating": 5,
     "description": "Qui consequatur molestiae harum et molestiae animi vel corporis quibusdam quia sed.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "вестерн",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 13,
@@ -101,7 +473,38 @@
     "date_publication": "2019",
     "rating": 4,
     "description": "At et aliquid qui aut quidem tenetur amet voluptatibus sint.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "мелодрама",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 14,
@@ -109,7 +512,38 @@
     "date_publication": "2014",
     "rating": 4,
     "description": "Autem omnis nostrum quasi vel nobis et omnis est laborum optio unde vitae corporis blanditiis.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "ужасы",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   },
   {
     "id": 15,
@@ -117,6 +551,37 @@
     "date_publication": "2001",
     "rating": 1,
     "description": "Iure dolorem est labore consequatur mollitia aut et similique accusamus possimus earum dicta sit quasi.",
-    "photo": 2131165405
+    "photo": 2131230949,
+    "genre": "военный",
+    "actors": [
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      },
+      {
+        "name": "Nicolas Cage",
+        "image": "2131230850"
+      }
+    ]
   }
 ]
