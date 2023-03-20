@@ -1,0 +1,83 @@
+[33mcommit 72f3d73a0ed008624fbb9456d5d8b2a395c5319e[m[33m ([m[1;36mHEAD -> [m[1;32mAndroid#2.1-list-layout[m[33m, [m[1;31morigin/Android#2.1-list-layout[m[33m)[m
+Author: kapustakiszona <niahaibudze@gmail.com>
+Date:   Sat Mar 11 20:42:38 2023 +0100
+
+    add Search, add chips-filter, local json update
+
+[33mcommit 0da38ddcbe26c7aa6c494312e04155b4ffd92b38[m
+Author: kapustakiszona <niahaibudze@gmail.com>
+Date:   Fri Mar 10 19:40:51 2023 +0100
+
+    Viewmodel fix
+
+[33mcommit 2318308343064c96ccb498e157b3d4d0368b0f90[m
+Author: kapustakiszona <niahaibudze@gmail.com>
+Date:   Thu Mar 9 20:15:15 2023 +0100
+
+    Add search, chips, new layouts
+
+[33mcommit bbf4e3ca12bf1a771a8a9070d419e0503e79f478[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m, [m[1;32mAndroid#3-Network[m[33m)[m
+Merge: bbacbea 1ea7e24
+Author: Grzegorz Brzęczyszczykiewicz <122317413+kapustakiszona@users.noreply.github.com>
+Date:   Sun Feb 19 12:25:40 2023 +0100
+
+    Merge pull request #4 from kapustakiszona/Android#3.local-json-creating
+    
+    Creating Json file, converting Json to data list
+
+[33mcommit 1ea7e24d318d90273373b9d06bba93c92b2697e9[m[33m ([m[1;31morigin/Android#3.local-json-creating[m[33m, [m[1;32mAndroid#3.local-json-creating[m[33m)[m
+Author: kapustakiszona <niahaibudze@gmail.com>
+Date:   Sat Feb 18 17:49:14 2023 +0100
+
+    Creating Json file, converting Json to data list
+
+[33mcommit bbacbeae4e4ca8058893faee3fa406777e352106[m
+Merge: f6790a1 c297148
+Author: Grzegorz Brzęczyszczykiewicz <122317413+kapustakiszona@users.noreply.github.com>
+Date:   Fri Feb 17 13:45:54 2023 +0100
+
+    Merge pull request #3 from kapustakiszona/Android#2-list-creating
+    
+    Add details fragment, realizing data passing between fragments
+
+[33mcommit c2971485c4a6480b604eacd131eeb80b79d4e9e6[m[33m ([m[1;31morigin/Android#2-list-creating[m[33m, [m[1;32mAndroid#2-list-creating[m[33m)[m
+Author: kapustakiszona <niahaibudze@gmail.com>
+Date:   Thu Feb 16 23:42:34 2023 +0100
+
+    Add details fragment, realizing data passing between fragments
+
+[33mcommit f6790a15c7eda6bd12ed71a459910c85c9b13d3e[m
+Merge: 589fc4c 565aa7a
+Author: Grzegorz Brzęczyszczykiewicz <122317413+kapustakiszona@users.noreply.github.com>
+Date:   Sun Feb 12 18:00:15 2023 +0100
+
+    Merge pull request #2 from kapustakiszona/Android#2-list-creating
+    
+    Add recyclerView, navGraph, viewModel
+
+[33mcommit 565aa7ab76b40c6b8e592e8fee2dc46f57672e16[m
+Author: kapustakiszona <niahaibudze@gmail.com>
+Date:   Sun Feb 12 01:34:58 2023 +0100
+
+    Add recyclerView, navGraph, viewModel
+
+[33mcommit 589fc4cf83e826cd87ee2ca93b2e338e1fab8eb4[m
+Merge: c735dab 701c285
+Author: Grzegorz Brzęczyszczykiewicz <122317413+kapustakiszona@users.noreply.github.com>
+Date:   Sat Feb 11 18:10:52 2023 +0100
+
+    Merge pull request #1 from kapustakiszona/Android#1-strartApp
+    
+    add  dependencies
+
+[33mcommit 701c285035d9a9ca9be3128d5a873db6883ac9c5[m[33m ([m[1;31morigin/Android#1-strartApp[m[33m, [m[1;32mAndroid#1-strartApp[m[33m)[m
+Author: kapustakiszona <niahaibudze@gmail.com>
+Date:   Sat Feb 11 15:41:42 2023 +0100
+
+    add  dependencies
+
+[33mcommit c735dabf73d3b570365eecb122de34025ecf033b[m
+Author: kapustakiszona <niahaibudze@gmail.com>
+Date:   Sat Feb 11 14:25:53 2023 +0100
+
+    creating repository
