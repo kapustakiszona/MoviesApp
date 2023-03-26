@@ -1,4 +1,4 @@
-package com.example.moviesapp
+package com.example.moviesapp.ui.films.ui
 
 
 import android.os.Bundle
@@ -13,10 +13,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.moviesapp.Util.getJsonDataFromAsset
 import com.example.moviesapp.databinding.FilmFragmentBinding
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.moviesapp.models.Chip
+import com.example.moviesapp.models.Film
+import com.example.moviesapp.network.Converter
+import com.example.moviesapp.network.NetworkClient
+import com.example.moviesapp.ui.films.vm.FilmsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class FilmFragment : Fragment(), AdapterListener {
@@ -40,7 +46,22 @@ class FilmFragment : Fragment(), AdapterListener {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         initVM()
-        getListFromJson()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val result = withContext(Dispatchers.IO){
+                NetworkClient.create().getGenreList()
+            }
+            filmViewModel.setupChipList(Converter().convertResponseToChipList(result.genres))
+        }
+        CoroutineScope(Dispatchers.Main).launch {
+            val result = withContext(Dispatchers.IO) {
+                // Выполнить какую-то операцию в фоновом потоке
+                NetworkClient.create().getPopularMovies()
+            }
+            filmViewModel.setupFilmList(Converter().convertResponseToFilmList(result.results))
+        }
+
+
     }
 
     private fun initUi() {
@@ -76,12 +97,13 @@ class FilmFragment : Fragment(), AdapterListener {
         filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
             adapterFilm.filmList = it
             showEmptyListPlaceholder(it)
-            Log.d("FilmFragment", " vm film list size ${it.size}")
             adapterFilm.notifyDataSetChanged()
+            Log.d("FilmFragment","observer filmlist: ${it.size}")
         }
         filmViewModel.chipList.observe(viewLifecycleOwner) {
             adapterChip.chipsList = it
             adapterChip.notifyDataSetChanged()
+            Log.d("FilmFragment","observer chiplist: ${it.size}")
         }
     }
 
@@ -89,19 +111,11 @@ class FilmFragment : Fragment(), AdapterListener {
         binding.placeholderTv.isGone = filmList.isNotEmpty()
     }
 
-    private fun getListFromJson() {
-        val jsonFileString = getJsonDataFromAsset(requireContext(), "json_data.json")
-        val gson = Gson()
-        val filmListType = object : TypeToken<ArrayList<Film>>() {}.type
-        val films: ArrayList<Film> = gson.fromJson(jsonFileString, filmListType)
-        filmViewModel.setupFilmList(films)
-    }
-
 
     override fun onFilmSelected(film: Film) {
         findNavController(binding.root).navigate(
             FilmFragmentDirections.actionFilmFragmentToDetailsFragment(
-                film
+                film.id
             )
         )
     }

@@ -1,9 +1,11 @@
-package com.example.moviesapp
+package com.example.moviesapp.ui.details.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.moviesapp.databinding.ActorItemBinding
+import com.example.moviesapp.models.Actor
 
 class ActorAdapter(private val actorsList: ArrayList<Actor>) :
     RecyclerView.Adapter<ActorAdapter.ActorViewHolder>() {
@@ -11,7 +13,9 @@ class ActorAdapter(private val actorsList: ArrayList<Actor>) :
     class ActorViewHolder(private val binding: ActorItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(actor: Actor) = with(binding) {
-            rvActorIv.setImageResource(actor.image)
+            rvActorIv.load("https://image.tmdb.org/t/p/original/" + actor.image){
+                crossfade(500)
+            }
             rvNameTv.text = actor.name
         }
     }

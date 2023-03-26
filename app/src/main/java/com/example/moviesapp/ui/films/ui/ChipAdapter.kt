@@ -1,9 +1,10 @@
-package com.example.moviesapp
+package com.example.moviesapp.ui.films.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.databinding.ChipsItemBinding
+import com.example.moviesapp.models.Chip
 
 class ChipAdapter(
     var chipsList: List<Chip>,
