@@ -7,7 +7,7 @@ import com.example.moviesapp.network.models.ResponsePopularMovies
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface ApiService {
+interface FilmsService {
 
     @GET("movie/popular")
     suspend fun getPopularMovies(): ResponsePopularMovies

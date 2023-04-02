@@ -16,19 +16,21 @@ data class DetailResponse(
     val title: String,
     val vote_average: Double,
     val vote_count: Int
-)
+) {
 
-fun convertResponseToFilmDetails(result: DetailResponse): Film {
+    fun convertResponseToFilmDetails(result: DetailResponse): Film {
 
-    return Film(
-        id = result.id,
-        name = result.title,
-        date_publication = result.release_date,
-        description = result.overview,
-        genreIds = emptyList(),
-        genreName = result.genres[0].name,
-        photo = result.poster_path,
-        rating = result.vote_average.div(2).toFloat(),
-        adult = Util.getAdultOrNot(result.adult)
-    )
+        return Film(
+            id = result.id,
+            name = result.title,
+            date_publication = result.release_date,
+            description = result.overview,
+            genreIds = emptyList(),
+            genreName = result.genres[0].name,
+            photo = result.poster_path,
+            rating = result.vote_average.div(2).toFloat(),
+            adult = Util.getAdultOrNot(result.adult)
+        )
+    }
+
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation.findNavController
@@ -26,7 +27,11 @@ class FilmFragment : Fragment() {
     private lateinit var binding: FilmFragmentBinding
 
     private val adapterFilm = BaseRecyclerAdapter { item, _ ->
-        onFilmItemSelected(item)
+        if (item is FilmItem) {
+            findNavController(binding.root).navigate(
+                FilmFragmentDirections.actionFilmFragmentToDetailsFragment(filmId = item.film.id)
+            )
+        }
     }
     private val adapterChip = BaseRecyclerAdapter { item, _ ->
         Log.d(TAG, "Item in adapter : ${item.getViewId()}")
@@ -76,32 +81,24 @@ class FilmFragment : Fragment() {
     }
 
     private fun initVM() {
-        filmViewModel.setupFilmList()
-        filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
-            adapterFilm.updateWithDiffUtils(it)
-            showEmptyListPlaceholder(it)
-            adapterFilm.notifyDataSetChanged()
-            Log.d(TAG, "observer filmlist: ${it.size}")
-        }
-        filmViewModel.chipList.observe(viewLifecycleOwner) {
-            adapterChip.updateWithDiffUtils(it)
-            adapterChip.notifyDataSetChanged()
-            Log.d(TAG, "observer chiplist: ${it.size}")
+        with(binding) {
+            filmViewModel.setupFilmList()
+            filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
+                adapterFilm.updateWithDiffUtils(it)
+                showEmptyListPlaceholder(it)
+            }
+            filmViewModel.chipList.observe(viewLifecycleOwner) {
+                adapterChip.updateWithDiffUtils(it)
+            }
+            filmViewModel.filmError.observe(viewLifecycleOwner) {
+                placeholderTv.isVisible = it != null
+                placeholderTv.text = it
+            }
         }
     }
 
     private fun showEmptyListPlaceholder(filmList: List<FilmItem>) {
         binding.placeholderTv.isGone = filmList.isNotEmpty()
-    }
-
-    private fun onFilmItemSelected(item: BaseListItem) {
-        if (item is FilmItem) {
-            findNavController(binding.root).navigate(
-                FilmFragmentDirections.actionFilmFragmentToDetailsFragment(
-                    item.film.id
-                )
-            )
-        }
     }
 
     private fun onChipItemSelected(item: BaseListItem) {

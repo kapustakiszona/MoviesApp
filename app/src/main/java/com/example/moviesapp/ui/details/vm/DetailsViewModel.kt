@@ -27,7 +27,7 @@ class DetailsViewModel : ViewModel() {
     fun getActorsListById(filmID: Int) {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                NetworkClient.create().getActorsListById(filmID)
+                NetworkClient.filmsService.getActorsListById(filmID)
             }
                 _actors.value = convertResponseToActorsList(result.cast)
         }
@@ -37,7 +37,7 @@ class DetailsViewModel : ViewModel() {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    NetworkClient.create().getMovieDetailsById(filmID)
+                    NetworkClient.filmsService.getMovieDetailsById(filmID)
                 } catch (e: Exception) {
                     Log.d(TAG, "DetailsRequest connection error: $e")
                 }

@@ -14,6 +14,7 @@
             android:id="@+id/action_filmFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.moviesapp.ui.details.ui.DetailsFragment"

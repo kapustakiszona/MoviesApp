@@ -2,15 +2,11 @@ package com.example.moviesapp.ui.films.vm
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.moviesapp.network.NetworkClient
-import com.example.moviesapp.network.models.convertResponseToChipList
-import com.example.moviesapp.network.models.convertResponseToFilmList
+import com.example.moviesapp.repository.FilmsRepository
 import com.example.moviesapp.ui.details.ui.TAG
 import com.example.moviesapp.ui.films.ui.ChipItem
 import com.example.moviesapp.ui.films.ui.FilmItem
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FilmsViewModel : ViewModel() {
     init {
@@ -29,7 +25,9 @@ class FilmsViewModel : ViewModel() {
         _searchQueryString.value = query
     }
 
-    private val _filmList = MutableLiveData<List<FilmItem>>()
+    val filmError = FilmsRepository.filmListError
+
+    private val _filmList = FilmsRepository.filmList
 
     private val mFilteredFilmList = MediatorLiveData<List<FilmItem>>().apply {
         addSource(chipList) {
@@ -76,21 +74,16 @@ class FilmsViewModel : ViewModel() {
 
     fun setupChipList() {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                NetworkClient.create().getGenreList()
+            /*val result = withContext(Dispatchers.IO) {
+                NetworkClient.filmsService.getGenreList()
             }
-            _chipList.value = convertResponseToChipList(result.genres)
+            _chipList.value = convertResponseToChipList(result.genres)*/
         }
     }
 
-
     fun setupFilmList() {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                // Выполнить какую-то операцию в фоновом потоке
-                NetworkClient.create().getPopularMovies()
-            }
-            _filmList.value = convertResponseToFilmList(result.results)
+            FilmsRepository.fetchFilms()
         }
     }
 
