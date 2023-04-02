@@ -1,19 +1,25 @@
 package com.example.moviesapp.ui.films.vm
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.moviesapp.models.Chip
-import com.example.moviesapp.models.Film
+import androidx.lifecycle.*
+import com.example.moviesapp.network.NetworkClient
+import com.example.moviesapp.network.models.convertResponseToChipList
+import com.example.moviesapp.network.models.convertResponseToFilmList
+import com.example.moviesapp.ui.details.ui.TAG
+import com.example.moviesapp.ui.films.ui.ChipItem
+import com.example.moviesapp.ui.films.ui.FilmItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FilmsViewModel : ViewModel() {
-init {
-    Log.d("FilmFragment", "Viewmodel created")
-}
-    private val _chipList = MutableLiveData<List<Chip>>()
-    val chipList: LiveData<List<Chip>>  = _chipList  //тут храним акктуальный список чипсов с акктуальными статусами
+    init {
+        setupChipList()
+    }
+
+    private val _chipList = MutableLiveData<List<ChipItem>>()
+    val chipList: LiveData<List<ChipItem>> =
+        _chipList  //тут храним акктуальный список чипсов с акктуальными статусами
 
     private val _searchQueryString = MutableLiveData<String>(null)
     val searchQueryString: LiveData<String> = _searchQueryString
@@ -23,13 +29,9 @@ init {
         _searchQueryString.value = query
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("FilmFragment", "Viewmodel _cleared")
-    }
-    private val _filmList = MutableLiveData<ArrayList<Film>>()
+    private val _filmList = MutableLiveData<List<FilmItem>>()
 
-    private val mFilteredFilmList = MediatorLiveData<ArrayList<Film>>().apply {
+    private val mFilteredFilmList = MediatorLiveData<List<FilmItem>>().apply {
         addSource(chipList) {
             value = mergeFilteredFilmList(
                 chipsList = it,
@@ -53,34 +55,49 @@ init {
         }
     }
 
-    val filteredFilmList: LiveData<java.util.ArrayList<Film>> =
+    val filteredFilmList: LiveData<List<FilmItem>> =
         mFilteredFilmList// Лайвдата которая торчит наружу
 
     private fun mergeFilteredFilmList(
-        chipsList: List<Chip>?,
-        filmsList: ArrayList<Film>?,
-        searchQuery: String?
-    ): ArrayList<Film> {
-        val listOfSelectedChips = chipsList.orEmpty().filter { it.state }.map { it.id }
-        return ArrayList(
-            filmsList.orEmpty()
-                .filter { listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(it.genreIds[0]) }
-                .filter { it.name.contains(searchQuery.orEmpty(), true) })
+        chipsList: List<ChipItem>?, filmsList: List<FilmItem>?, searchQuery: String?
+    ): MutableList<FilmItem> {
+        val listOfSelectedChips =
+            chipsList.orEmpty().filter { it.chipItem.state }.map { it.chipItem.id }
+        return filmsList.orEmpty()
+            .filter {
+                it.film.genreIds.isNotEmpty() && (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
+                    it.film.genreIds[0]
+                ))
+            }
+            .filter { it.film.name.contains(searchQuery.orEmpty(), true) }
+            .toMutableList()
     }
 
-    fun setupChipList(chipList: List<Chip>){
-        _chipList.value = chipList
+
+    fun setupChipList() {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                NetworkClient.create().getGenreList()
+            }
+            _chipList.value = convertResponseToChipList(result.genres)
+        }
     }
 
-    fun setupFilmList(filmList: ArrayList<Film>) {// Сюда кладем загруженный из файла список фильмов,
-        // либо грущзим прямо в этом методе
-        _filmList.value = filmList
+
+    fun setupFilmList() {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                // Выполнить какую-то операцию в фоновом потоке
+                NetworkClient.create().getPopularMovies()
+            }
+            _filmList.value = convertResponseToFilmList(result.results)
+        }
     }
 
-    fun toggleChipsState(chip: Chip) {// Переключаем статус чипсов
-        val oldChipsList = chipList.value.orEmpty() as ArrayList
-        oldChipsList.find { it == chip }?.state = !chip.state
+    fun toggleChipsState(item: ChipItem) {// Переключаем статус чипсов
+        val oldChipsList = chipList.value.orEmpty()
+        Log.d(TAG, "Oldchiplist size: ${oldChipsList.size}")
+        oldChipsList.find { it == item }?.chipItem?.state = !item.chipItem.state
         _chipList.value = oldChipsList
     }
-
 }

@@ -1,4 +1,8 @@
 package com.example.moviesapp.models
 
 
-data class Actor(val name: String, val image: String?)
+data class Actor(val name: String, val image: String?) {
+    fun getImageUrl(baseUrl: String): String {
+        return baseUrl + image
+    }
+}

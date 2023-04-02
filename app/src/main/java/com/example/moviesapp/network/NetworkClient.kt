@@ -5,7 +5,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
+const val BASE_REQUEST_URL = "https://api.themoviedb.org/3/"
+const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/original/"
 object NetworkClient {
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -32,6 +33,6 @@ object NetworkClient {
     fun create(): ApiService =
         Retrofit.Builder().client(client)
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl(BASE_REQUEST_URL)
             .build().create(ApiService::class.java)
 }

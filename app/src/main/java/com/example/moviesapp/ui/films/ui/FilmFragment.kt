@@ -14,31 +14,29 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviesapp.databinding.FilmFragmentBinding
-import com.example.moviesapp.models.Chip
-import com.example.moviesapp.models.Film
-import com.example.moviesapp.network.Converter
-import com.example.moviesapp.network.NetworkClient
+import com.example.moviesapp.ui.adapter.BaseListItem
+import com.example.moviesapp.ui.adapter.BaseRecyclerAdapter
+import com.example.moviesapp.ui.details.ui.TAG
 import com.example.moviesapp.ui.films.vm.FilmsViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
-class FilmFragment : Fragment(), AdapterListener {
+class FilmFragment : Fragment() {
 
     private val filmViewModel by viewModels<FilmsViewModel>()
     private lateinit var binding: FilmFragmentBinding
 
-    private val adapterFilm = FilmAdapter(emptyList(), this)
-    private val adapterChip = ChipAdapter(emptyList(), this)
-
+    private val adapterFilm = BaseRecyclerAdapter { item, _ ->
+        onFilmItemSelected(item)
+    }
+    private val adapterChip = BaseRecyclerAdapter { item, _ ->
+        Log.d(TAG, "Item in adapter : ${item.getViewId()}")
+        onChipItemSelected(item)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FilmFragmentBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -46,22 +44,6 @@ class FilmFragment : Fragment(), AdapterListener {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         initVM()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            val result = withContext(Dispatchers.IO){
-                NetworkClient.create().getGenreList()
-            }
-            filmViewModel.setupChipList(Converter().convertResponseToChipList(result.genres))
-        }
-        CoroutineScope(Dispatchers.Main).launch {
-            val result = withContext(Dispatchers.IO) {
-                // Выполнить какую-то операцию в фоновом потоке
-                NetworkClient.create().getPopularMovies()
-            }
-            filmViewModel.setupFilmList(Converter().convertResponseToFilmList(result.results))
-        }
-
-
     }
 
     private fun initUi() {
@@ -94,34 +76,38 @@ class FilmFragment : Fragment(), AdapterListener {
     }
 
     private fun initVM() {
+        filmViewModel.setupFilmList()
         filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
-            adapterFilm.filmList = it
+            adapterFilm.updateWithDiffUtils(it)
             showEmptyListPlaceholder(it)
             adapterFilm.notifyDataSetChanged()
-            Log.d("FilmFragment","observer filmlist: ${it.size}")
+            Log.d(TAG, "observer filmlist: ${it.size}")
         }
         filmViewModel.chipList.observe(viewLifecycleOwner) {
-            adapterChip.chipsList = it
+            adapterChip.updateWithDiffUtils(it)
             adapterChip.notifyDataSetChanged()
-            Log.d("FilmFragment","observer chiplist: ${it.size}")
+            Log.d(TAG, "observer chiplist: ${it.size}")
         }
     }
 
-    private fun showEmptyListPlaceholder(filmList: ArrayList<Film>) {
+    private fun showEmptyListPlaceholder(filmList: List<FilmItem>) {
         binding.placeholderTv.isGone = filmList.isNotEmpty()
     }
 
-
-    override fun onFilmSelected(film: Film) {
-        findNavController(binding.root).navigate(
-            FilmFragmentDirections.actionFilmFragmentToDetailsFragment(
-                film.id
+    private fun onFilmItemSelected(item: BaseListItem) {
+        if (item is FilmItem) {
+            findNavController(binding.root).navigate(
+                FilmFragmentDirections.actionFilmFragmentToDetailsFragment(
+                    item.film.id
+                )
             )
-        )
+        }
     }
 
-    override fun onChipSelected(myChip: Chip) {
-        filmViewModel.toggleChipsState(myChip)
+    private fun onChipItemSelected(item: BaseListItem) {
+        Log.d(TAG, "OnchipItem selected")
+        if (item is ChipItem)
+            filmViewModel.toggleChipsState(item)
     }
 
 

@@ -12,4 +12,8 @@ data class Film(
     val photo: String,
     val genreIds: List<Int>,
     val genreName: String
-)
+){
+    fun getImageUrl(baseUrl: String): String {
+        return baseUrl + photo
+    }
+}
