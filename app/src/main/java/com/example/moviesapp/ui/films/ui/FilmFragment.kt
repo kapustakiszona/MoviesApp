@@ -4,19 +4,17 @@ package com.example.moviesapp.ui.films.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviesapp.databinding.FilmFragmentBinding
 import com.example.moviesapp.ui.adapter.BaseListItem
 import com.example.moviesapp.ui.adapter.BaseRecyclerAdapter
-import com.example.moviesapp.ui.details.ui.TAG
 import com.example.moviesapp.ui.films.vm.FilmsViewModel
 
 
@@ -29,7 +27,6 @@ class FilmFragment : Fragment() {
         onFilmItemSelected(item)
     }
     private val adapterChip = BaseRecyclerAdapter { item, _ ->
-        Log.d(TAG, "Item in adapter : ${item.getViewId()}")
         onChipItemSelected(item)
     }
 
@@ -80,14 +77,20 @@ class FilmFragment : Fragment() {
         filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
             adapterFilm.updateWithDiffUtils(it)
             showEmptyListPlaceholder(it)
-            adapterFilm.notifyDataSetChanged()
-            Log.d(TAG, "observer filmlist: ${it.size}")
         }
-        filmViewModel.chipList.observe(viewLifecycleOwner) {
-            adapterChip.updateWithDiffUtils(it)
-            adapterChip.notifyDataSetChanged()
-            Log.d(TAG, "observer chiplist: ${it.size}")
+        filmViewModel._chipList.observe(viewLifecycleOwner) {
+            adapterChip.updateWithDiffUtils(it.orEmpty())
         }
+        filmViewModel.chipError.observe(viewLifecycleOwner){
+            showErrorInfo(it)
+        }
+        filmViewModel.filmError.observe(viewLifecycleOwner) {
+            showErrorInfo(it)
+        }
+    }
+
+    private fun showErrorInfo(error: String?) {
+        binding.placeholderTv.append(error)
     }
 
     private fun showEmptyListPlaceholder(filmList: List<FilmItem>) {
@@ -96,7 +99,7 @@ class FilmFragment : Fragment() {
 
     private fun onFilmItemSelected(item: BaseListItem) {
         if (item is FilmItem) {
-            findNavController(binding.root).navigate(
+            findNavController().navigate(
                 FilmFragmentDirections.actionFilmFragmentToDetailsFragment(
                     item.film.id
                 )
@@ -105,7 +108,6 @@ class FilmFragment : Fragment() {
     }
 
     private fun onChipItemSelected(item: BaseListItem) {
-        Log.d(TAG, "OnchipItem selected")
         if (item is ChipItem)
             filmViewModel.toggleChipsState(item)
     }

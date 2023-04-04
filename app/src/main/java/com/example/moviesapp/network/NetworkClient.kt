@@ -5,34 +5,42 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 const val BASE_REQUEST_URL = "https://api.themoviedb.org/3/"
 const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/original/"
+
 object NetworkClient {
+    lateinit var filmsService: FilmsService
+        private set
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url
-            .newBuilder()
-            .addQueryParameter("api_key", "e9a92b2fe9c5e6707013ce401ef38915")
-            .build()
+                .newBuilder()
+                .addQueryParameter("api_key", "e9a92b2fe9c5e6707013ce401ef38915")
+                .build()
 
         val newRequest = chain.request()
-            .newBuilder()
-            .url(newUrl)
-            .build()
+                .newBuilder()
+                .url(newUrl)
+                .build()
 
         chain.proceed(newRequest)
     }
     private val client = OkHttpClient().newBuilder()
-        .addInterceptor(authInterceptor)
-        .addInterceptor(loggingInterceptor)
-        .build()
+            .addInterceptor(authInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .build()
 
-    fun create(): ApiService =
-        Retrofit.Builder().client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_REQUEST_URL)
-            .build().create(ApiService::class.java)
+    private fun retrofitBuilder() =
+            Retrofit.Builder().client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(BASE_REQUEST_URL)
+                    .build()
+
+    fun initNetwork() {
+        filmsService = retrofitBuilder().create(FilmsService::class.java)
+    }
 }

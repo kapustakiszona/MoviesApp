@@ -1,8 +1,10 @@
 package com.example.moviesapp.models
 
+import com.example.moviesapp.network.BASE_IMAGE_URL
+
 
 data class Actor(val name: String, val image: String?) {
-    fun getImageUrl(baseUrl: String): String {
-        return baseUrl + image
+    fun getImageUrl(): String {
+        return BASE_IMAGE_URL + image
     }
 }

@@ -8,6 +8,9 @@ import com.example.moviesapp.ui.adapter.BaseListItem
 
 class ChipItem(val chipItem: Chip): BaseListItem {
     override fun getViewId(): Int = R.layout.chips_item
+    override fun isItemEquals(another: BaseListItem): Boolean {
+        return another is ChipItem && another.chipItem == chipItem
+    }
 
     override fun renderView(view: View, positionInAdapter: Int) {
         with(ChipsItemBinding.bind(view)){
