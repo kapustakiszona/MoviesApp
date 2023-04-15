@@ -45,7 +45,7 @@ class FilmFragment : Fragment() {
 
     private fun initUi() {
         with(binding) {
-            recyclerView.apply {
+            popularRecyclerView.apply {
                 adapter = adapterFilm
                 layoutManager = GridLayoutManager(requireContext(), 2)
             }
@@ -73,15 +73,14 @@ class FilmFragment : Fragment() {
     }
 
     private fun initVM() {
-        filmViewModel.setupFilmList()
         filmViewModel.filteredFilmList.observe(viewLifecycleOwner) {
             adapterFilm.updateWithDiffUtils(it)
             showEmptyListPlaceholder(it)
         }
-        filmViewModel._chipList.observe(viewLifecycleOwner) {
+        filmViewModel.chipListLiveData.observe(viewLifecycleOwner) {
             adapterChip.updateWithDiffUtils(it.orEmpty())
         }
-        filmViewModel.chipError.observe(viewLifecycleOwner){
+        filmViewModel.chipError.observe(viewLifecycleOwner) {
             showErrorInfo(it)
         }
         filmViewModel.filmError.observe(viewLifecycleOwner) {

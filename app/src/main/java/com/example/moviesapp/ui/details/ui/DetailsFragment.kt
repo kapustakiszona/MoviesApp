@@ -22,27 +22,25 @@ const val TAG = "MY_LOG"
 class DetailsFragment : Fragment() {
     private val viewModel by viewModels<DetailsViewModel>()
     private val args: DetailsFragmentArgs by navArgs()
-    private lateinit var binding: FragmentDetailsBinding
+    private var _binding: FragmentDetailsBinding? = null
+    private val binding get() = _binding!!
     private val adapterActor = BaseRecyclerAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = FragmentDetailsBinding.bind(view)
-        val filmId = args.filmId
-        initVM(filmId = filmId)
+        initVM(filmId = args.filmId)
         initUI()
     }
 
     private fun initVM(filmId: Int) {
-        viewModel.getActorsListById(filmId)
-        viewModel.getFilmDetailsById(filmId)
-        viewModel._actors.observe(viewLifecycleOwner) {
+        viewModel.onInitialized(filmId)
+        viewModel.actorLiveData.observe(viewLifecycleOwner) {
             adapterActor.updateWithDiffUtils(it.orEmpty())
         }
         viewModel.actorError.observe(viewLifecycleOwner) {
@@ -51,7 +49,7 @@ class DetailsFragment : Fragment() {
         viewModel.filmError.observe(viewLifecycleOwner) {
             binding.detailDescriptionTv.append(it)
         }
-        viewModel._film.observe(viewLifecycleOwner) {
+        viewModel.filmLiveData.observe(viewLifecycleOwner) {
             Log.d(TAG, "film: ${it?.name}")
             initActorItem(it)
         }
@@ -65,7 +63,7 @@ class DetailsFragment : Fragment() {
                 detailNameTv.text = film.name
                 detailDescriptionTv.text = film.description
                 detailDateTv.text = film.date_publication
-                genreChip.text = film.genreName
+                genreChip.text = film.genre_name
                 ageDetailRatingTv.text = film.adult
             }
         }

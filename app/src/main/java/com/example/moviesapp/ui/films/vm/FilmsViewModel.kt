@@ -9,9 +9,10 @@ import kotlinx.coroutines.launch
 class FilmsViewModel : ViewModel() {
     init {
         setupChipList()
+        setupFilmList()
     }
 
-    val _chipList = FilmRepository.chipList
+    val chipListLiveData = FilmRepository.chipList
     val chipError = FilmRepository.chipListError
 
     private val _searchQueryString = MutableLiveData<String>(null)
@@ -26,7 +27,7 @@ class FilmsViewModel : ViewModel() {
     private val _filmList = FilmRepository.filmList
 
     private val mFilteredFilmList = MediatorLiveData<List<FilmItem>>().apply {
-        addSource(_chipList) {
+        addSource(chipListLiveData) {
             value = mergeFilteredFilmList(
                 chipsList = it,
                 filmsList = _filmList.value,
@@ -35,14 +36,14 @@ class FilmsViewModel : ViewModel() {
         }
         addSource(_filmList) {
             value = mergeFilteredFilmList(
-                chipsList = _chipList.value,
+                chipsList = chipListLiveData.value,
                 filmsList = it,
                 searchQuery = searchQueryString.value
             )
         }
         addSource(searchQueryString) {
             value = mergeFilteredFilmList(
-                chipsList = _chipList.value,
+                chipsList = chipListLiveData.value,
                 filmsList = _filmList.value,
                 searchQuery = it
             )
@@ -59,8 +60,8 @@ class FilmsViewModel : ViewModel() {
             chipsList.orEmpty().filter { it.chipItem.state }.map { it.chipItem.id }
         return filmsList.orEmpty()
             .filter {
-                it.film.genreIds.isNotEmpty() && (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
-                    it.film.genreIds[0]
+                it.film.genre_ids.isNotEmpty() && (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
+                    it.film.genre_ids[0]
                 ))
             }
             .filter { it.film.name.contains(searchQuery.orEmpty(), true) }

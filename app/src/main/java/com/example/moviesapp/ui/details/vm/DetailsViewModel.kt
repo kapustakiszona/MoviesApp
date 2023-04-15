@@ -10,23 +10,21 @@ import kotlinx.coroutines.launch
 
 class DetailsViewModel : ViewModel() {
 
-    val _actors = FilmRepository.actorList
+    val actorLiveData = FilmRepository.actorList
     val actorError = FilmRepository.actorListError
 
-    val _film = FilmRepository.filmDetails
+    val filmLiveData = FilmRepository.filmDetails
     val filmError =  FilmRepository.filmDetailsError
 
-    fun getActorsListById(filmID: Int) {
+    fun onInitialized(filmID: Int){
         viewModelScope.launch {
             FilmRepository.fetchActors(filmID)
         }
-    }
-
-    fun getFilmDetailsById(filmID: Int) {
         viewModelScope.launch {
             Log.d(TAG, "getDetailsStarted")
             FilmRepository.fetchDetails(filmID)
         }
     }
+
 
 }

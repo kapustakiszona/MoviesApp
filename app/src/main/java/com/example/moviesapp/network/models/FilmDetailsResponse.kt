@@ -21,8 +21,8 @@ data class FilmDetailsResponse(
             name = title.orEmpty(),
             date_publication = release_date.orEmpty(),
             description = overview.orEmpty(),
-            genreIds = emptyList(),
-            genreName = genres.orEmpty().firstOrNull()?.name.orEmpty(),
+            genre_ids = emptyList(),
+            genre_name = genres.orEmpty().firstOrNull()?.name.orEmpty(),
             photo = poster_path.orEmpty(),
             rating = (vote_average ?: 0.0).div(2).toFloat(),
             adult = Util.getAdultOrNot(adult == true)

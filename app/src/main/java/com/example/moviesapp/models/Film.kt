@@ -11,9 +11,10 @@ data class Film(
     val rating: Float,
     val description: String,
     val photo: String,
-    val genreIds: List<Int>,
-    val genreName: String
+    val genre_ids: List<Int>,
+    val genre_name: String = ""
 ){
+
     fun getImageUrl(): String {
         return BASE_IMAGE_URL + photo
     }
