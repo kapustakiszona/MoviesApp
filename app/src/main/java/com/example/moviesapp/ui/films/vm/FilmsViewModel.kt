@@ -1,6 +1,10 @@
 package com.example.moviesapp.ui.films.vm
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.network.repository.FilmRepository
 import com.example.moviesapp.ui.films.ui.ChipItem
 import com.example.moviesapp.ui.films.ui.FilmItem
@@ -51,38 +55,41 @@ class FilmsViewModel : ViewModel() {
     }
 
     val filteredFilmList: LiveData<List<FilmItem>> =
-        mFilteredFilmList// Лайвдата которая торчит наружу
+        mFilteredFilmList
 
     private fun mergeFilteredFilmList(
         chipsList: List<ChipItem>?, filmsList: List<FilmItem>?, searchQuery: String?
     ): MutableList<FilmItem> {
-        val listOfSelectedChips =
-            chipsList.orEmpty().filter { it.chipItem.state }.map { it.chipItem.id }
+        val listOfSelectedChips = chipsList.orEmpty().filter { it.chipItem.state }.map { it.chipItem.id }
         return filmsList.orEmpty()
             .filter {
-                it.film.genre_ids.isNotEmpty() && (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
-                    it.film.genre_ids[0]
+                it.film.genre_id == null || (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
+                    it.film.genre_id
                 ))
             }
             .filter { it.film.name.contains(searchQuery.orEmpty(), true) }
             .toMutableList()
     }
 
+    fun setupFilmsAfterRefresh() {
+        viewModelScope.launch {
+            FilmRepository.fetchFilmsAfterRefresh()
+        }
+    }
 
-    fun setupChipList() {
+    private fun setupChipList() {
         viewModelScope.launch {
             FilmRepository.fetchChips()
         }
     }
 
-
-    fun setupFilmList() {
+    private fun setupFilmList() {
         viewModelScope.launch {
             FilmRepository.fetchFilms()
         }
     }
 
-    fun toggleChipsState(item: ChipItem) {// Переключаем статус чипсов
+    fun toggleChipsState(item: ChipItem) {
         FilmRepository.toggleChipsState(item)
     }
 }

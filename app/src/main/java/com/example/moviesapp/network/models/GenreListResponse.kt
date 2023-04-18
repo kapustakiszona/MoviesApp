@@ -19,7 +19,14 @@ data class GenreListResponse(
                 )
             )
         }
+        fun toChip(): Chip{
+            return Chip(
+                id = id,
+                name = name
+            )
+        }
     }
+
 
     fun toChipList(): List<ChipItem> {
         return genres.orEmpty().map {

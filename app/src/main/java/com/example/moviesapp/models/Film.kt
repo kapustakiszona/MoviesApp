@@ -11,8 +11,8 @@ data class Film(
     val rating: Float,
     val description: String,
     val photo: String,
-    val genre_ids: List<Int>,
-    val genre_name: String = ""
+    val genre_id: Int?,
+    var genre_name: String = ""
 ){
 
     fun getImageUrl(): String {

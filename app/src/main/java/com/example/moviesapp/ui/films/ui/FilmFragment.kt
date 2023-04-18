@@ -41,6 +41,14 @@ class FilmFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         initVM()
+        swipeToRefresh()
+    }
+
+    private fun swipeToRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            filmViewModel.setupFilmsAfterRefresh()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun initUi() {

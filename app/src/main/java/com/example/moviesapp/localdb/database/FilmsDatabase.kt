@@ -1,10 +1,10 @@
 package com.example.moviesapp.localdb.database
 
-import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.moviesapp.MoviesApp
 import com.example.moviesapp.localdb.Converters
 import com.example.moviesapp.localdb.dao.FilmsDao
 import com.example.moviesapp.localdb.dao.GenreDao
@@ -17,7 +17,7 @@ import com.example.moviesapp.localdb.entities.GenreEntity
         FilmEntity::class,
         GenreEntity::class
     ],
-    version = 1
+    version = 2
 )
 abstract class FilmsDatabase : RoomDatabase() {
 
@@ -27,13 +27,14 @@ abstract class FilmsDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: FilmsDatabase? = null
-        fun getDatabase(context: Context): FilmsDatabase {
+        fun getDatabase(): FilmsDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext,
+                    MoviesApp.instance,
                     FilmsDatabase::class.java,
                     "movies_database"
-                ).build()
+                ).fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

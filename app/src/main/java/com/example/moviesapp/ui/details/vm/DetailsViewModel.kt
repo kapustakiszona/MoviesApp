@@ -1,10 +1,8 @@
 package com.example.moviesapp.ui.details.vm
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.network.repository.FilmRepository
-import com.example.moviesapp.ui.details.ui.TAG
 import kotlinx.coroutines.launch
 
 
@@ -21,7 +19,6 @@ class DetailsViewModel : ViewModel() {
             FilmRepository.fetchActors(filmID)
         }
         viewModelScope.launch {
-            Log.d(TAG, "getDetailsStarted")
             FilmRepository.fetchDetails(filmID)
         }
     }

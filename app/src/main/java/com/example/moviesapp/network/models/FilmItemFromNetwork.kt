@@ -22,7 +22,7 @@ data class FilmItemFromNetwork(
                 name = title.orEmpty(),
                 date_publication = release_date.orEmpty(),
                 description = overview.orEmpty(),
-                genre_ids = genre_ids.orEmpty(),
+                genre_id = genre_ids.orEmpty().firstOrNull(),
                 photo = poster_path.orEmpty(),
                 rating = (vote_average ?: 0.0).div(2).toFloat(),
                 adult = Util.getAdultOrNot(adult == true)
@@ -38,7 +38,7 @@ data class FilmItemFromNetwork(
         rating = (vote_average ?: 0.0).div(2).toFloat(),
         description = overview.orEmpty(),
         photo = poster_path.orEmpty(),
-        genre_ids = genre_ids.orEmpty(),
+        genre_ids = genre_ids.orEmpty().firstOrNull(),
         genre_name = ""
     )
 }

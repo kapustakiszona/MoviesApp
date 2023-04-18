@@ -1,5 +1,6 @@
 package com.example.moviesapp.network
 
+import com.example.moviesapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,7 +20,7 @@ object NetworkClient {
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url
                 .newBuilder()
-                .addQueryParameter("api_key", "e9a92b2fe9c5e6707013ce401ef38915")
+                .addQueryParameter("api_key", BuildConfig.API_KEY)
                 .build()
 
         val newRequest = chain.request()

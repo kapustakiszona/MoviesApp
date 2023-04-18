@@ -1,9 +1,7 @@
 package com.example.moviesapp.network.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.moviesapp.MoviesApp
 import com.example.moviesapp.localdb.database.FilmsDatabase
 import com.example.moviesapp.localdb.entities.FilmEntity
 import com.example.moviesapp.models.Film
@@ -12,7 +10,6 @@ import com.example.moviesapp.network.getGenreListAsync
 import com.example.moviesapp.network.getMovieDetailsByIdAsync
 import com.example.moviesapp.network.getPopularMoviesAsync
 import com.example.moviesapp.ui.details.ui.ActorItem
-import com.example.moviesapp.ui.details.ui.TAG
 import com.example.moviesapp.ui.films.ui.ChipItem
 import com.example.moviesapp.ui.films.ui.FilmItem
 import kotlinx.coroutines.Dispatchers
@@ -44,30 +41,34 @@ object FilmRepository {
     private val mFilmDetailsError = MutableLiveData<String?>()
     val filmDetailsError: LiveData<String?> = mFilmDetailsError
 
-
+    private val filmDao = FilmsDatabase.getDatabase().getFilmDao()
+    private val genreDao = FilmsDatabase.getDatabase().getGenreDao()
     fun clearLiveData() {
         mFilmDetails.value = null
     }
 
-
-    private suspend fun isDbEmpty(): Boolean {
-        return withContext(Dispatchers.IO) {
-            FilmsDatabase.getDatabase(MoviesApp.instance).getFilmDao().getAllPopular().isEmpty()
+    suspend fun fetchFilmsAfterRefresh() = withContext(Dispatchers.IO) {
+        val result = getPopularMoviesAsync()
+        withContext(Dispatchers.Main) {
+            result.error?.let { errorMessage ->
+                mFilmListError.value = errorMessage
+            }
+            result.results?.let {
+                mFilmList.value = result.toFilmList()
+                insertFilmsToDb(result.toFilmListEntity())
+            }
         }
     }
 
     private suspend fun insertFilmsToDb(films: List<FilmEntity>) = withContext(Dispatchers.IO) {
-        FilmsDatabase.getDatabase(MoviesApp.instance).getFilmDao()
-            .insertAllPopular(films)
-    }
-
-    private suspend fun getAllPopularFromDb() = withContext(Dispatchers.Main) {
-        val films = FilmsDatabase.getDatabase(MoviesApp.instance).getFilmDao().getAllPopular()
-        mFilmList.value = films.map { it.toFilmItem() }
+        filmDao.deleteAllPopularFilms()
+        filmDao.insertAllPopularFilms(films)
+        filmDao.setupGenreNameInFilms()
     }
 
     suspend fun fetchFilms() = withContext(Dispatchers.IO) {
-        if (isDbEmpty()) {
+        val filmListFromDb = filmDao.getAllPopularFilms()
+        if (filmListFromDb.orEmpty().isEmpty()) {
             val result = getPopularMoviesAsync()
             withContext(Dispatchers.Main) {
                 result.error?.let { errorMessage ->
@@ -79,24 +80,32 @@ object FilmRepository {
                 }
             }
         } else {
-            getAllPopularFromDb()
+            withContext(Dispatchers.Main) {
+                mFilmList.value = filmListFromDb.orEmpty().map { it.toFilmItem() }
+            }
         }
     }
 
+    private suspend fun getGenreName(genreId: Int?) =
+        withContext(Dispatchers.IO) {
+            val genreItem = genreDao.getById(genreId ?: 0)
+            return@withContext genreItem.name
+        }
+
     suspend fun fetchDetails(filmId: Int) = withContext(Dispatchers.IO) {
-        val result = getMovieDetailsByIdAsync(filmId)
-        withContext(Dispatchers.Main) {
-            result.error?.let { errorMessage ->
-                mFilmDetailsError.value = errorMessage
+        val detailsFromDb = filmDao.findFilmDetailsById(filmId)
+        if (detailsFromDb != null) {
+            withContext(Dispatchers.Main) {
+                detailsFromDb.genre_name = getGenreName(detailsFromDb.genre_ids)
+                mFilmDetails.value = detailsFromDb.toFilm()
             }
-            result.let {
-                val details = FilmsDatabase.getDatabase(MoviesApp.instance).getFilmDao().findById(filmId)
-                if (details.id.equals(null)) {
-                    Log.d(TAG, "result in details: $result")
-                    mFilmDetails.value = result.toFilmDetails()
-                }else{
-                    mFilmDetails.value = details.toFilm()
+        } else {
+            val result = getMovieDetailsByIdAsync(filmId)
+            withContext(Dispatchers.Main) {
+                result.error?.let { errorMessage ->
+                    mFilmDetailsError.value = errorMessage
                 }
+                mFilmDetails.value = result.toFilmDetails()
             }
         }
     }
@@ -114,22 +123,28 @@ object FilmRepository {
     }
 
     suspend fun fetchChips() = withContext(Dispatchers.IO) {
-        val result = getGenreListAsync()
-        withContext(Dispatchers.Main) {
-            result.error?.let { errorMessage ->
-                mChipListError.value = errorMessage
+        val chipListFromDb = genreDao.getAllGenres()
+        if (chipListFromDb.isEmpty()) {
+            val result = getGenreListAsync()
+            withContext(Dispatchers.Main) {
+                result.error?.let { errorMessage ->
+                    mChipListError.value = errorMessage
+                }
+                result.genres?.let { genreList ->
+                    mChipList.value = result.toChipList()
+                    genreDao.insertAllGenres(genreList.map { it.toChip() })
+                }
             }
-            result.genres?.let {
-                mChipList.value = result.toChipList()
+        } else {
+            withContext(Dispatchers.Main) {
+                mChipList.value = chipListFromDb.map { it.toChipItem() }
             }
         }
     }
 
-
-    fun toggleChipsState(item: ChipItem) {// Переключаем статус чипсов
+    fun toggleChipsState(item: ChipItem) {
         val oldChipsList = chipList.value.orEmpty()
         oldChipsList.find { it == item }?.chipItem?.state = !item.chipItem.state
         mChipList.value = oldChipsList
     }
-
 }

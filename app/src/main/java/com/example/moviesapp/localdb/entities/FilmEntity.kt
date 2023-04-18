@@ -20,8 +20,8 @@ data class FilmEntity(
     val rating: Float,
     val description: String,
     val photo: String,
-    val genre_ids: List<Int>,
-    val genre_name: String
+    val genre_ids: Int?,
+    var genre_name: String
 ) {
     fun toFilmItem(): FilmItem = FilmItem(
         Film(
@@ -32,7 +32,7 @@ data class FilmEntity(
             rating = rating,
             description = description,
             photo = photo,
-            genre_ids = genre_ids,
+            genre_id = genre_ids,
         )
     )
 
@@ -44,7 +44,7 @@ data class FilmEntity(
         rating = rating,
         description = description,
         photo = photo,
-        genre_ids = genre_ids,
+        genre_id = genre_ids,
         genre_name = genre_name
     )
 }

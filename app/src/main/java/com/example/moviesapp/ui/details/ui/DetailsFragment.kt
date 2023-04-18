@@ -1,7 +1,6 @@
 package com.example.moviesapp.ui.details.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +49,6 @@ class DetailsFragment : Fragment() {
             binding.detailDescriptionTv.append(it)
         }
         viewModel.filmLiveData.observe(viewLifecycleOwner) {
-            Log.d(TAG, "film: ${it?.name}")
             initActorItem(it)
         }
     }
