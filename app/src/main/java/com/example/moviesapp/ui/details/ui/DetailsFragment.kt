@@ -39,8 +39,9 @@ class DetailsFragment : Fragment() {
 
     private fun initVM(filmId: Int) {
         viewModel.onInitialized(filmId)
-        viewModel.actorLiveData.observe(viewLifecycleOwner) {
-            adapterActor.updateWithDiffUtils(it.orEmpty())
+        viewModel.actorLiveData.observe(viewLifecycleOwner) { listActor ->
+            val listActorItem = listActor.orEmpty()
+            adapterActor.updateWithDiffUtils(listActorItem.map { ActorItem(it) })
         }
         viewModel.actorError.observe(viewLifecycleOwner) {
             binding.detailDescriptionTv.append(it)

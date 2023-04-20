@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.moviesapp.models.Chip
-import com.example.moviesapp.ui.films.ui.ChipItem
 
 @Entity(
     tableName = "genres",
@@ -17,10 +16,9 @@ data class GenreEntity(
     val name: String,
     val state: Boolean
 ) {
-    fun toChipItem(): ChipItem = ChipItem(
+    fun toChip(): Chip =
         Chip(
             id = id,
             name = name
         )
-    )
 }

@@ -24,16 +24,7 @@ data class FilmEntity(
     var genre_name: String
 ) {
     fun toFilmItem(): FilmItem = FilmItem(
-        Film(
-            id = id,
-            name = name,
-            date_publication = date_publication,
-            adult = adult,
-            rating = rating,
-            description = description,
-            photo = photo,
-            genre_id = genre_ids,
-        )
+        toFilm()
     )
 
     fun toFilm(): Film = Film(
@@ -44,7 +35,7 @@ data class FilmEntity(
         rating = rating,
         description = description,
         photo = photo,
-        genre_id = genre_ids,
+        genre_id = genre_ids ?: 0,
         genre_name = genre_name
     )
 }

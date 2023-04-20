@@ -7,7 +7,7 @@ import com.example.moviesapp.databinding.ActorItemBinding
 import com.example.moviesapp.models.Actor
 import com.example.moviesapp.ui.adapter.BaseListItem
 
-class ActorItem(val actor: Actor) : BaseListItem {
+class ActorItem( val actor: Actor) : BaseListItem {
     override fun getViewId(): Int = R.layout.actor_item
 
     override fun renderView(view: View, positionInAdapter: Int) {

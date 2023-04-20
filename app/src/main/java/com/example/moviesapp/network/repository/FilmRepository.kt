@@ -4,33 +4,32 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.moviesapp.localdb.database.FilmsDatabase
 import com.example.moviesapp.localdb.entities.FilmEntity
+import com.example.moviesapp.models.Actor
+import com.example.moviesapp.models.Chip
 import com.example.moviesapp.models.Film
 import com.example.moviesapp.network.getActorListByIdAsync
 import com.example.moviesapp.network.getGenreListAsync
 import com.example.moviesapp.network.getMovieDetailsByIdAsync
 import com.example.moviesapp.network.getPopularMoviesAsync
-import com.example.moviesapp.ui.details.ui.ActorItem
-import com.example.moviesapp.ui.films.ui.ChipItem
-import com.example.moviesapp.ui.films.ui.FilmItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 object FilmRepository {
 
-    private val mChipList = MutableLiveData<List<ChipItem>?>()
-    val chipList: LiveData<List<ChipItem>?> = mChipList
+    private val mChipList = MutableLiveData<List<Chip>?>()
+    val chipList: LiveData<List<Chip>?> = mChipList
 
     private val mChipListError = MutableLiveData<String?>()
     val chipListError: LiveData<String?> = mChipListError
 
-    private val mFilmList = MutableLiveData<List<FilmItem>?>()
-    val filmList: LiveData<List<FilmItem>?> = mFilmList
+    private val mFilmList = MutableLiveData<List<Film>?>()
+    val filmList: LiveData<List<Film>?> = mFilmList
 
     private val mFilmListError = MutableLiveData<String?>()
     val filmListError: LiveData<String?> = mFilmListError
 
-    private val mActorList = MutableLiveData<List<ActorItem>?>()
-    val actorList: LiveData<List<ActorItem>?> = mActorList
+    private val mActorList = MutableLiveData<List<Actor>?>()
+    val actorList: LiveData<List<Actor>?> = mActorList
 
     private val mActorListError = MutableLiveData<String?>()
     val actorListError: LiveData<String?> = mActorListError
@@ -61,7 +60,6 @@ object FilmRepository {
     }
 
     private suspend fun insertFilmsToDb(films: List<FilmEntity>) = withContext(Dispatchers.IO) {
-        filmDao.deleteAllPopularFilms()
         filmDao.insertAllPopularFilms(films)
         filmDao.setupGenreNameInFilms()
     }
@@ -81,7 +79,7 @@ object FilmRepository {
             }
         } else {
             withContext(Dispatchers.Main) {
-                mFilmList.value = filmListFromDb.orEmpty().map { it.toFilmItem() }
+                mFilmList.value = filmListFromDb.orEmpty().map { it.toFilm() }
             }
         }
     }
@@ -137,14 +135,14 @@ object FilmRepository {
             }
         } else {
             withContext(Dispatchers.Main) {
-                mChipList.value = chipListFromDb.map { it.toChipItem() }
+                mChipList.value = chipListFromDb.map { it.toChip() }
             }
         }
     }
 
-    fun toggleChipsState(item: ChipItem) {
-        val oldChipsList = chipList.value.orEmpty()
-        oldChipsList.find { it == item }?.chipItem?.state = !item.chipItem.state
+    fun toggleChipsState(item: Chip) {
+        val oldChipsList = mChipList.value.orEmpty()
+        oldChipsList.find { it == item }?.state = !item.state
         mChipList.value = oldChipsList
     }
 }

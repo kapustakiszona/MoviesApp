@@ -5,9 +5,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moviesapp.models.Chip
+import com.example.moviesapp.models.Film
 import com.example.moviesapp.network.repository.FilmRepository
-import com.example.moviesapp.ui.films.ui.ChipItem
-import com.example.moviesapp.ui.films.ui.FilmItem
 import kotlinx.coroutines.launch
 
 class FilmsViewModel : ViewModel() {
@@ -30,7 +30,7 @@ class FilmsViewModel : ViewModel() {
 
     private val _filmList = FilmRepository.filmList
 
-    private val mFilteredFilmList = MediatorLiveData<List<FilmItem>>().apply {
+    private val mFilteredFilmList = MediatorLiveData<List<Film>>().apply {
         addSource(chipListLiveData) {
             value = mergeFilteredFilmList(
                 chipsList = it,
@@ -54,20 +54,20 @@ class FilmsViewModel : ViewModel() {
         }
     }
 
-    val filteredFilmList: LiveData<List<FilmItem>> =
+    val filteredFilmList: LiveData<List<Film>> =
         mFilteredFilmList
 
     private fun mergeFilteredFilmList(
-        chipsList: List<ChipItem>?, filmsList: List<FilmItem>?, searchQuery: String?
-    ): MutableList<FilmItem> {
-        val listOfSelectedChips = chipsList.orEmpty().filter { it.chipItem.state }.map { it.chipItem.id }
+        chipsList: List<Chip>?, filmsList: List<Film>?, searchQuery: String?
+    ): MutableList<Film> {
+        val listOfSelectedChips = chipsList.orEmpty().filter { it.state }.map { it.id }
         return filmsList.orEmpty()
             .filter {
-                it.film.genre_id == null || (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
-                    it.film.genre_id
+                it.genre_id == null || (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
+                    it.genre_id
                 ))
             }
-            .filter { it.film.name.contains(searchQuery.orEmpty(), true) }
+            .filter { it.name.contains(searchQuery.orEmpty(), true) }
             .toMutableList()
     }
 
@@ -89,7 +89,7 @@ class FilmsViewModel : ViewModel() {
         }
     }
 
-    fun toggleChipsState(item: ChipItem) {
+    fun toggleChipsState(item: Chip) {
         FilmRepository.toggleChipsState(item)
     }
 }
