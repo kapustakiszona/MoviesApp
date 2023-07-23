@@ -1,26 +1,28 @@
 package com.example.moviesapp.network.models
 
 import com.example.moviesapp.models.Chip
-import com.example.moviesapp.ui.films.ui.ChipItem
 
 data class GenreListResponse(
-    val genres: List<Genre>
-) {
-
+    val genres: List<Genre>?,
+    override val error: String?,
+) : NetworkError {
     data class Genre(
         val id: Int,
         val name: String
-    )
-}
-
-fun convertResponseToChipList(result: List<GenreListResponse.Genre>): List<ChipItem> {
-    return result.map {
-        ChipItem(
-            Chip(
-                id = it.id,
-                name = it.name,
-                state = false
+    ) {
+        fun toChip(): Chip {
+            return Chip(
+                id = id,
+                name = name
             )
-        )
+        }
+    }
+
+
+    fun toChipList(): List<Chip> {
+        return genres.orEmpty().map {
+            it.toChip()
+        }
     }
 }
+

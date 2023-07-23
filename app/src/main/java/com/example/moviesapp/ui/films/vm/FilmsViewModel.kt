@@ -1,38 +1,37 @@
 package com.example.moviesapp.ui.films.vm
 
-import android.util.Log
-import androidx.lifecycle.*
-import com.example.moviesapp.network.NetworkClient
-import com.example.moviesapp.network.models.convertResponseToChipList
-import com.example.moviesapp.network.models.convertResponseToFilmList
-import com.example.moviesapp.ui.details.ui.TAG
-import com.example.moviesapp.ui.films.ui.ChipItem
-import com.example.moviesapp.ui.films.ui.FilmItem
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.moviesapp.models.Chip
+import com.example.moviesapp.models.Film
+import com.example.moviesapp.network.repository.FilmRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FilmsViewModel : ViewModel() {
     init {
         setupChipList()
+        setupFilmList()
     }
 
-    private val _chipList = MutableLiveData<List<ChipItem>>()
-    val chipList: LiveData<List<ChipItem>> =
-        _chipList  //тут храним акктуальный список чипсов с акктуальными статусами
+    val chipListLiveData = FilmRepository.chipList
+    val chipError = FilmRepository.chipListError
 
     private val _searchQueryString = MutableLiveData<String>(null)
-    val searchQueryString: LiveData<String> = _searchQueryString
+    private val searchQueryString: LiveData<String> = _searchQueryString
 
+    val filmError = FilmRepository.filmListError
 
     fun setSearchQuery(query: String) {
         _searchQueryString.value = query
     }
 
-    private val _filmList = MutableLiveData<List<FilmItem>>()
+    private val _filmList = FilmRepository.filmList
 
-    private val mFilteredFilmList = MediatorLiveData<List<FilmItem>>().apply {
-        addSource(chipList) {
+    private val mFilteredFilmList = MediatorLiveData<List<Film>>().apply {
+        addSource(chipListLiveData) {
             value = mergeFilteredFilmList(
                 chipsList = it,
                 filmsList = _filmList.value,
@@ -41,63 +40,56 @@ class FilmsViewModel : ViewModel() {
         }
         addSource(_filmList) {
             value = mergeFilteredFilmList(
-                chipsList = chipList.value,
+                chipsList = chipListLiveData.value,
                 filmsList = it,
                 searchQuery = searchQueryString.value
             )
         }
         addSource(searchQueryString) {
             value = mergeFilteredFilmList(
-                chipsList = chipList.value,
+                chipsList = chipListLiveData.value,
                 filmsList = _filmList.value,
                 searchQuery = it
             )
         }
     }
 
-    val filteredFilmList: LiveData<List<FilmItem>> =
-        mFilteredFilmList// Лайвдата которая торчит наружу
+    val filteredFilmList: LiveData<List<Film>> =
+        mFilteredFilmList
 
     private fun mergeFilteredFilmList(
-        chipsList: List<ChipItem>?, filmsList: List<FilmItem>?, searchQuery: String?
-    ): MutableList<FilmItem> {
-        val listOfSelectedChips =
-            chipsList.orEmpty().filter { it.chipItem.state }.map { it.chipItem.id }
+        chipsList: List<Chip>?, filmsList: List<Film>?, searchQuery: String?
+    ): MutableList<Film> {
+        val listOfSelectedChips = chipsList.orEmpty().filter { it.state }.map { it.id }
         return filmsList.orEmpty()
             .filter {
-                it.film.genreIds.isNotEmpty() && (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
-                    it.film.genreIds[0]
+                it.genre_id == null || (listOfSelectedChips.isEmpty() || listOfSelectedChips.contains(
+                    it.genre_id
                 ))
             }
-            .filter { it.film.name.contains(searchQuery.orEmpty(), true) }
+            .filter { it.name.contains(searchQuery.orEmpty(), true) }
             .toMutableList()
     }
 
-
-    fun setupChipList() {
+    fun setupFilmsAfterRefresh() {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                NetworkClient.create().getGenreList()
-            }
-            _chipList.value = convertResponseToChipList(result.genres)
+            FilmRepository.fetchFilmsAfterRefresh()
         }
     }
 
-
-    fun setupFilmList() {
+    private fun setupChipList() {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                // Выполнить какую-то операцию в фоновом потоке
-                NetworkClient.create().getPopularMovies()
-            }
-            _filmList.value = convertResponseToFilmList(result.results)
+            FilmRepository.fetchChips()
         }
     }
 
-    fun toggleChipsState(item: ChipItem) {// Переключаем статус чипсов
-        val oldChipsList = chipList.value.orEmpty()
-        Log.d(TAG, "Oldchiplist size: ${oldChipsList.size}")
-        oldChipsList.find { it == item }?.chipItem?.state = !item.chipItem.state
-        _chipList.value = oldChipsList
+    private fun setupFilmList() {
+        viewModelScope.launch {
+            FilmRepository.fetchFilms()
+        }
+    }
+
+    fun toggleChipsState(item: Chip) {
+        FilmRepository.toggleChipsState(item)
     }
 }

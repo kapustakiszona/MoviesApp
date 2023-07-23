@@ -1,5 +1,6 @@
 package com.example.moviesapp.models
 
+import com.example.moviesapp.network.BASE_IMAGE_URL
 
 
 data class Film(
@@ -10,10 +11,11 @@ data class Film(
     val rating: Float,
     val description: String,
     val photo: String,
-    val genreIds: List<Int>,
-    val genreName: String
+    val genre_id: Int?,
+    var genre_name: String = ""
 ){
-    fun getImageUrl(baseUrl: String): String {
-        return baseUrl + photo
+
+    fun getImageUrl(): String {
+        return BASE_IMAGE_URL + photo
     }
 }
