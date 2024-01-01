@@ -18,10 +18,7 @@ interface FilmsDao {
     @Insert(entity = FilmEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllPopularFilms(films: List<FilmEntity>)
 
-    @Query("UPDATE films SET genre_name = (SELECT name FROM genres WHERE id = films.genre_ids)")
+    @Query("UPDATE films SET genreName = (SELECT name FROM genres WHERE id = films.genreIds)")
     suspend fun setupGenreNameInFilms()
-
-    @Query("DELETE FROM films")
-    suspend fun deleteAllPopularFilms()
 
 }

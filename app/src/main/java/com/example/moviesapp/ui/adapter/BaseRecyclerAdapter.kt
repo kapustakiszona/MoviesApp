@@ -44,9 +44,9 @@ class BaseRecyclerAdapter(
     ) : RecyclerView.ViewHolder(view) {
 
         open fun renderItem(holderItem: BaseListItem) {
-            holderItem.renderView(view, adapterPosition)
+            holderItem.renderView(view, absoluteAdapterPosition)
             view.setOnClickListener {
-                onItemClickListener?.invoke(holderItem, adapterPosition)
+                onItemClickListener?.invoke(holderItem, absoluteAdapterPosition)
             }
         }
     }

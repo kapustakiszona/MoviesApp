@@ -1,5 +1,6 @@
 package com.example.moviesapp.ui.details.ui
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +12,15 @@ import coil.load
 import com.example.moviesapp.R
 import com.example.moviesapp.databinding.FragmentDetailsBinding
 import com.example.moviesapp.models.Film
-import com.example.moviesapp.network.repository.FilmRepository
 import com.example.moviesapp.ui.adapter.BaseRecyclerAdapter
 import com.example.moviesapp.ui.details.vm.DetailsViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import dagger.hilt.android.AndroidEntryPoint
 
-const val TAG = "MY_LOG"
 
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
-    private val viewModel by viewModels<DetailsViewModel>()
+    private val viewModel: DetailsViewModel by viewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
@@ -50,11 +51,11 @@ class DetailsFragment : Fragment() {
             binding.detailDescriptionTv.append(it)
         }
         viewModel.filmLiveData.observe(viewLifecycleOwner) {
-            initActorItem(it)
+            initFilmItem(it)
         }
     }
 
-    private fun initActorItem(film: Film?) {
+    private fun initFilmItem(film: Film?) {
         with(binding) {
             if (film != null) {
                 ratingBar.rating = film.rating.div(2)
@@ -66,11 +67,6 @@ class DetailsFragment : Fragment() {
                 ageDetailRatingTv.text = film.adult
             }
         }
-    }
-
-    override fun onDestroy() {
-        FilmRepository.clearLiveData()
-        super.onDestroy()
     }
 
     private fun initUI() {
@@ -85,4 +81,8 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        viewModel.clearLiveData()
+        super.onDestroy()
+    }
 }

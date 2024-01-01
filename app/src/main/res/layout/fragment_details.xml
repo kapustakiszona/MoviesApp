@@ -16,7 +16,7 @@
         android:id="@+id/sheet"
         android:layout_width="match_parent"
         android:layout_height="450dp"
-        app:cardCornerRadius="25dp"
+        app:cardBackgroundColor="@color/primaryColor"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,6 +112,7 @@
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline_start">
