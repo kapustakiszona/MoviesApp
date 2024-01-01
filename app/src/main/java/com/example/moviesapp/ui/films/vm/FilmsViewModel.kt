@@ -8,54 +8,50 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.models.Chip
 import com.example.moviesapp.models.Film
 import com.example.moviesapp.network.repository.FilmRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FilmsViewModel : ViewModel() {
+@HiltViewModel
+class FilmsViewModel @Inject constructor(
+    private val filmRepository: FilmRepository
+) : ViewModel() {
     init {
         setupChipList()
         setupFilmList()
     }
 
-    val chipListLiveData = FilmRepository.chipList
-    val chipError = FilmRepository.chipListError
+    val chipError = filmRepository.chipListError
+    val filmError = filmRepository.filmListError
+    val chipList = filmRepository.chipList
 
     private val _searchQueryString = MutableLiveData<String>(null)
-    private val searchQueryString: LiveData<String> = _searchQueryString
-
-    val filmError = FilmRepository.filmListError
-
-    fun setSearchQuery(query: String) {
-        _searchQueryString.value = query
-    }
-
-    private val _filmList = FilmRepository.filmList
-
-    private val mFilteredFilmList = MediatorLiveData<List<Film>>().apply {
-        addSource(chipListLiveData) {
+    private val _filteredFilmList = MediatorLiveData<List<Film>>().apply {
+        addSource(chipList) {
             value = mergeFilteredFilmList(
                 chipsList = it,
-                filmsList = _filmList.value,
-                searchQuery = searchQueryString.value
+                filmsList = filmRepository.filmList.value,
+                searchQuery = _searchQueryString.value
             )
         }
-        addSource(_filmList) {
+        addSource(filmRepository.filmList) {
             value = mergeFilteredFilmList(
-                chipsList = chipListLiveData.value,
+                chipsList = chipList.value,
                 filmsList = it,
-                searchQuery = searchQueryString.value
+                searchQuery = _searchQueryString.value
             )
         }
-        addSource(searchQueryString) {
+        addSource(_searchQueryString) {
             value = mergeFilteredFilmList(
-                chipsList = chipListLiveData.value,
-                filmsList = _filmList.value,
+                chipsList = chipList.value,
+                filmsList = filmRepository.filmList.value,
                 searchQuery = it
             )
         }
     }
 
     val filteredFilmList: LiveData<List<Film>> =
-        mFilteredFilmList
+        _filteredFilmList
 
     private fun mergeFilteredFilmList(
         chipsList: List<Chip>?, filmsList: List<Film>?, searchQuery: String?
@@ -73,23 +69,29 @@ class FilmsViewModel : ViewModel() {
 
     fun setupFilmsAfterRefresh() {
         viewModelScope.launch {
-            FilmRepository.fetchFilmsAfterRefresh()
+            filmRepository.fetchFilmsAfterRefresh()
         }
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQueryString.value = query
     }
 
     private fun setupChipList() {
         viewModelScope.launch {
-            FilmRepository.fetchChips()
+            filmRepository.fetchChips()
         }
     }
 
     private fun setupFilmList() {
         viewModelScope.launch {
-            FilmRepository.fetchFilms()
+            filmRepository.fetchFilms()
         }
     }
 
     fun toggleChipsState(item: Chip) {
-        FilmRepository.toggleChipsState(item)
+        val oldChipsList = chipList.value.orEmpty()
+        oldChipsList.find { it == item }?.state = !item.state
+        filmRepository.setCHipList(oldChipsList)
     }
 }

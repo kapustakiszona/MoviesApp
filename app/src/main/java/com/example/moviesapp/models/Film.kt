@@ -1,6 +1,6 @@
 package com.example.moviesapp.models
 
-import com.example.moviesapp.network.BASE_IMAGE_URL
+import com.example.moviesapp.network.Constants.BASE_IMAGE_URL
 
 
 data class Film(

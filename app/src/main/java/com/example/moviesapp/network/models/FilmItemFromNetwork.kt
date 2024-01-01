@@ -26,16 +26,15 @@ data class FilmItemFromNetwork(
             adult = Util.getAdultOrNot(adult == true)
         )
 
-
-fun toFilmEntity(): FilmEntity = FilmEntity(
-    id = id ?: 0,
-    name = title.orEmpty(),
-    date_publication = release_date.orEmpty(),
-    adult = Util.getAdultOrNot(adult == true),
-    rating = (vote_average ?: 0.0).div(2).toFloat(),
-    description = overview.orEmpty(),
-    photo = poster_path.orEmpty(),
-    genre_ids = genre_ids.orEmpty().firstOrNull(),
-    genre_name = ""
-)
+    fun toFilmEntity(): FilmEntity = FilmEntity(
+        id = id ?: 0,
+        name = title.orEmpty(),
+        datePublication = release_date.orEmpty(),
+        adult = Util.getAdultOrNot(adult == true),
+        rating = (vote_average ?: 0.0).div(2).toFloat(),
+        description = overview.orEmpty(),
+        photo = poster_path.orEmpty(),
+        genreIds = genre_ids.orEmpty().firstOrNull(),
+        genreName = ""
+    )
 }

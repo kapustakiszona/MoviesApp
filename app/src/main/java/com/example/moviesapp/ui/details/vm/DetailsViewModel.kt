@@ -3,25 +3,31 @@ package com.example.moviesapp.ui.details.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.network.repository.FilmRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
+class DetailsViewModel @Inject constructor(
+    private val filmRepository: FilmRepository
+) : ViewModel() {
 
-class DetailsViewModel : ViewModel() {
+    val actorLiveData = filmRepository.actorList
+    val actorError = filmRepository.actorListError
 
-    val actorLiveData = FilmRepository.actorList
-    val actorError = FilmRepository.actorListError
+    val filmLiveData = filmRepository.filmDetails
+    val filmError = filmRepository.filmDetailsError
 
-    val filmLiveData = FilmRepository.filmDetails
-    val filmError =  FilmRepository.filmDetailsError
-
-    fun onInitialized(filmID: Int){
+    fun onInitialized(filmID: Int) {
         viewModelScope.launch {
-            FilmRepository.fetchActors(filmID)
+            filmRepository.fetchActors(filmID)
         }
         viewModelScope.launch {
-            FilmRepository.fetchDetails(filmID)
+            filmRepository.fetchDetails(filmID)
         }
     }
 
-
+    fun clearLiveData() {
+        filmRepository.clearLiveData()
+    }
 }

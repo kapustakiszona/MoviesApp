@@ -4,6 +4,7 @@ package com.example.moviesapp.ui.films.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,11 +18,11 @@ import com.example.moviesapp.models.Film
 import com.example.moviesapp.ui.adapter.BaseListItem
 import com.example.moviesapp.ui.adapter.BaseRecyclerAdapter
 import com.example.moviesapp.ui.films.vm.FilmsViewModel
-
-
+import dagger.hilt.android.AndroidEntryPoint
+@AndroidEntryPoint
 class FilmFragment : Fragment() {
 
-    private val filmViewModel by viewModels<FilmsViewModel>()
+    private val filmViewModel: FilmsViewModel by viewModels()
     private lateinit var binding: FilmFragmentBinding
 
     private val adapterFilm = BaseRecyclerAdapter { item, _ ->
@@ -56,7 +57,7 @@ class FilmFragment : Fragment() {
         with(binding) {
             popularRecyclerView.apply {
                 adapter = adapterFilm
-                layoutManager = GridLayoutManager(requireContext(), 2)
+                layoutManager = GridLayoutManager(context, 2)
             }
             chipRecyclerView.apply {
                 adapter = adapterChip
@@ -82,12 +83,12 @@ class FilmFragment : Fragment() {
     }
 
     private fun initVM() {
-        filmViewModel.filteredFilmList.observe(viewLifecycleOwner) { it ->
-            adapterFilm.updateWithDiffUtils(it.map { FilmItem(it) })
-            showEmptyListPlaceholder(it)
+        filmViewModel.filteredFilmList.observe(viewLifecycleOwner) { filmList ->
+            adapterFilm.updateWithDiffUtils(filmList.map { FilmItem(it) })
+            showEmptyListPlaceholder(filmList)
         }
-        filmViewModel.chipListLiveData.observe(viewLifecycleOwner) { it ->
-            adapterChip.updateWithDiffUtils(it.orEmpty().map { ChipItem(it) })
+        filmViewModel.chipList.observe(viewLifecycleOwner) { chipList ->
+            adapterChip.updateWithDiffUtils(chipList.orEmpty().map { ChipItem(it) })
         }
         filmViewModel.chipError.observe(viewLifecycleOwner) {
             showErrorInfo(it)
@@ -102,6 +103,7 @@ class FilmFragment : Fragment() {
     }
 
     private fun showEmptyListPlaceholder(filmList: List<Film>) {
+        Log.d("OOOOOO", "showEmptyListPlaceholder: ${filmList.isEmpty()} ")
         binding.placeholderTv.isGone = filmList.isNotEmpty()
     }
 
@@ -119,7 +121,6 @@ class FilmFragment : Fragment() {
         if (item is ChipItem)
             filmViewModel.toggleChipsState(item.chipItem)
     }
-
 
 }
 

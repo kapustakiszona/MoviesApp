@@ -7,16 +7,17 @@ import com.example.moviesapp.localdb.entities.FilmEntity
 import com.example.moviesapp.models.Actor
 import com.example.moviesapp.models.Chip
 import com.example.moviesapp.models.Film
-import com.example.moviesapp.network.getActorListByIdAsync
-import com.example.moviesapp.network.getGenreListAsync
-import com.example.moviesapp.network.getMovieDetailsByIdAsync
-import com.example.moviesapp.network.getPopularMoviesAsync
+import com.example.moviesapp.network.FilmsApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-object FilmRepository {
+class FilmRepository @Inject constructor(
+    private val localDataSource: FilmsDatabase,
+    private val remoteDataSource: FilmsApi
+) {
 
-    private val mChipList = MutableLiveData<List<Chip>?>()
+    val mChipList = MutableLiveData<List<Chip>?>()
     val chipList: LiveData<List<Chip>?> = mChipList
 
     private val mChipListError = MutableLiveData<String?>()
@@ -40,23 +41,12 @@ object FilmRepository {
     private val mFilmDetailsError = MutableLiveData<String?>()
     val filmDetailsError: LiveData<String?> = mFilmDetailsError
 
-    private val filmDao = FilmsDatabase.getDatabase().getFilmDao()
-    private val genreDao = FilmsDatabase.getDatabase().getGenreDao()
-    fun clearLiveData() {
-        mFilmDetails.value = null
-    }
+    private val filmDao = localDataSource.getFilmDao()
+    private val genreDao = localDataSource.getGenreDao()
 
-    suspend fun fetchFilmsAfterRefresh() = withContext(Dispatchers.IO) {
-        val result = getPopularMoviesAsync()
-        withContext(Dispatchers.Main) {
-            result.error?.let { errorMessage ->
-                mFilmListError.value = errorMessage
-            }
-            result.results?.let {
-                mFilmList.value = result.toFilmList()
-                insertFilmsToDb(result.toFilmListEntity())
-            }
-        }
+
+    suspend fun fetchFilmsAfterRefresh() {
+        fetchFilms(true)
     }
 
     private suspend fun insertFilmsToDb(films: List<FilmEntity>) = withContext(Dispatchers.IO) {
@@ -64,10 +54,10 @@ object FilmRepository {
         filmDao.setupGenreNameInFilms()
     }
 
-    suspend fun fetchFilms() = withContext(Dispatchers.IO) {
+    suspend fun fetchFilms(forceFetch: Boolean = false) = withContext(Dispatchers.IO) {
         val filmListFromDb = filmDao.getAllPopularFilms()
-        if (filmListFromDb.orEmpty().isEmpty()) {
-            val result = getPopularMoviesAsync()
+        if (filmListFromDb.orEmpty().isEmpty() || forceFetch) {
+            val result = remoteDataSource.getPopularMoviesAsync()
             withContext(Dispatchers.Main) {
                 result.error?.let { errorMessage ->
                     mFilmListError.value = errorMessage
@@ -94,11 +84,11 @@ object FilmRepository {
         val detailsFromDb = filmDao.findFilmDetailsById(filmId)
         if (detailsFromDb != null) {
             withContext(Dispatchers.Main) {
-                detailsFromDb.genre_name = getGenreName(detailsFromDb.genre_ids)
+                detailsFromDb.genreName = getGenreName(detailsFromDb.genreIds)
                 mFilmDetails.value = detailsFromDb.toFilm()
             }
         } else {
-            val result = getMovieDetailsByIdAsync(filmId)
+            val result = remoteDataSource.getMovieDetailsByIdAsync(filmId)
             withContext(Dispatchers.Main) {
                 result.error?.let { errorMessage ->
                     mFilmDetailsError.value = errorMessage
@@ -109,7 +99,7 @@ object FilmRepository {
     }
 
     suspend fun fetchActors(filmId: Int) = withContext(Dispatchers.IO) {
-        val result = getActorListByIdAsync(filmId)
+        val result = remoteDataSource.getActorListByIdAsync(filmId)
         withContext(Dispatchers.Main) {
             result.error?.let { errorMessage ->
                 mActorListError.value = errorMessage
@@ -123,7 +113,7 @@ object FilmRepository {
     suspend fun fetchChips() = withContext(Dispatchers.IO) {
         val chipListFromDb = genreDao.getAllGenres()
         if (chipListFromDb.isEmpty()) {
-            val result = getGenreListAsync()
+            val result = remoteDataSource.getGenreListAsync()
             withContext(Dispatchers.Main) {
                 result.error?.let { errorMessage ->
                     mChipListError.value = errorMessage
@@ -140,9 +130,11 @@ object FilmRepository {
         }
     }
 
-    fun toggleChipsState(item: Chip) {
-        val oldChipsList = mChipList.value.orEmpty()
-        oldChipsList.find { it == item }?.state = !item.state
-        mChipList.value = oldChipsList
+    fun setCHipList(newList: List<Chip>) {
+        mChipList.value = newList
+    }
+
+    fun clearLiveData() {
+        mFilmDetails.value = null
     }
 }
