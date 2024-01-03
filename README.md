@@ -9,7 +9,7 @@ This app shows an up-to-date list of the most popular films according to The Mov
 + Search bar.
 ## :film_strip:Preview
 <details>
-  <summary>Click me</summary>
+  <summary>Click me :point_left:</summary>
   
 ![](https://github.com/kapustakiszona/MoviesApp/blob/master/docs/1.gif) ![](https://github.com/kapustakiszona/MoviesApp/blob/master/docs/2.gif)
 ![](https://github.com/kapustakiszona/MoviesApp/blob/master/docs/3.gif) ![](https://github.com/kapustakiszona/MoviesApp/blob/master/docs/4.gif)
