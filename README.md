@@ -30,5 +30,6 @@ This app shows an up-to-date list of the most popular films according to The Mov
 + [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) - an observable data holder class
 + [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Perform asynchronous operations
 + [Coil](https://coil-kt.github.io/coil/) - An image loading library backed by Kotlin Coroutines
+
 **Services**
 + [TMDB API](https://developer.themoviedb.org/reference/intro/getting-started) - The Movies Database API
