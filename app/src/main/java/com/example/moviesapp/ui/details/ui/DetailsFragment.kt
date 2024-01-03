@@ -57,7 +57,7 @@ class DetailsFragment : Fragment() {
     private fun initFilmItem(film: Film?) {
         with(binding) {
             if (film != null) {
-                ratingBar.rating = film.rating.div(2)
+                ratingBar.rating = film.rating
                 detailPosterIv.load(film.getImageUrl())
                 detailNameTv.text = film.name
                 detailDescriptionTv.text = film.description
