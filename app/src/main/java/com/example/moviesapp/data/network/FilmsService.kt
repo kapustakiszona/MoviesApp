@@ -1,6 +1,9 @@
-package com.example.moviesapp.network
+package com.example.moviesapp.data.network
 
-import com.example.moviesapp.network.models.*
+import com.example.moviesapp.data.network.models.ActorsListResponse
+import com.example.moviesapp.data.network.models.FilmDetailsResponse
+import com.example.moviesapp.data.network.models.GenreListResponse
+import com.example.moviesapp.data.network.models.ResponsePopularFilms
 import retrofit2.http.GET
 import retrofit2.http.Path
 

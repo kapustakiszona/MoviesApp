@@ -1,13 +1,13 @@
-package com.example.moviesapp.network.repository
+package com.example.moviesapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.moviesapp.localdb.database.FilmsDatabase
-import com.example.moviesapp.localdb.entities.FilmEntity
+import com.example.moviesapp.data.localdb.database.FilmsDatabase
+import com.example.moviesapp.data.localdb.entities.FilmEntity
+import com.example.moviesapp.data.network.FilmsApi
 import com.example.moviesapp.models.Actor
 import com.example.moviesapp.models.Chip
 import com.example.moviesapp.models.Film
-import com.example.moviesapp.network.FilmsApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -17,7 +17,7 @@ class FilmRepository @Inject constructor(
     private val remoteDataSource: FilmsApi
 ) {
 
-    val mChipList = MutableLiveData<List<Chip>?>()
+    private val mChipList = MutableLiveData<List<Chip>?>()
     val chipList: LiveData<List<Chip>?> = mChipList
 
     private val mChipListError = MutableLiveData<String?>()
@@ -134,7 +134,7 @@ class FilmRepository @Inject constructor(
         mChipList.value = newList
     }
 
-    fun clearLiveData() {
+    fun clearDetailsLiveData() {
         mFilmDetails.value = null
     }
 }

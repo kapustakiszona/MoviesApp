@@ -1,4 +1,4 @@
-package com.example.moviesapp.network.models
+package com.example.moviesapp.data.network.models
 
 interface NetworkError {
     val error: String?

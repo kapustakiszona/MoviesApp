@@ -1,10 +1,10 @@
-package com.example.moviesapp.localdb.dao
+package com.example.moviesapp.data.localdb.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.moviesapp.localdb.entities.FilmEntity
+import com.example.moviesapp.data.localdb.entities.FilmEntity
 
 @Dao
 interface FilmsDao {

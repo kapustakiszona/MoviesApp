@@ -1,4 +1,4 @@
-package com.example.moviesapp.localdb.entities
+package com.example.moviesapp.data.localdb.entities
 
 import androidx.room.Entity
 import androidx.room.Index

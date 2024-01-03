@@ -1,11 +1,11 @@
-package com.example.moviesapp.localdb.database
+package com.example.moviesapp.data.localdb.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.moviesapp.localdb.dao.FilmsDao
-import com.example.moviesapp.localdb.dao.GenreDao
-import com.example.moviesapp.localdb.entities.FilmEntity
-import com.example.moviesapp.localdb.entities.GenreEntity
+import com.example.moviesapp.data.localdb.dao.FilmsDao
+import com.example.moviesapp.data.localdb.dao.GenreDao
+import com.example.moviesapp.data.localdb.entities.FilmEntity
+import com.example.moviesapp.data.localdb.entities.GenreEntity
 
 @Database(
     entities = [

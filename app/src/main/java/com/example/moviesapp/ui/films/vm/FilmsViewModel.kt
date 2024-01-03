@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.models.Chip
 import com.example.moviesapp.models.Film
-import com.example.moviesapp.network.repository.FilmRepository
+import com.example.moviesapp.repository.FilmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

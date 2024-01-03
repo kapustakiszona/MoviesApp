@@ -1,4 +1,4 @@
-package com.example.moviesapp.network
+package com.example.moviesapp.data.network
 
 object Util {
 

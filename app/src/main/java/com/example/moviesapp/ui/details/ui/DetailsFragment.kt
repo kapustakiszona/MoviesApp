@@ -22,14 +22,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class DetailsFragment : Fragment() {
     private val viewModel: DetailsViewModel by viewModels()
     private val args: DetailsFragmentArgs by navArgs()
-    private var _binding: FragmentDetailsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentDetailsBinding
     private val adapterActor = BaseRecyclerAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -79,10 +78,5 @@ class DetailsFragment : Fragment() {
                 this.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
-    }
-
-    override fun onDestroy() {
-        viewModel.clearLiveData()
-        super.onDestroy()
     }
 }

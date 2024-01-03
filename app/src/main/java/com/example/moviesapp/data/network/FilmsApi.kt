@@ -1,9 +1,9 @@
-package com.example.moviesapp.network
+package com.example.moviesapp.data.network
 
-import com.example.moviesapp.network.models.ActorsListResponse
-import com.example.moviesapp.network.models.FilmDetailsResponse
-import com.example.moviesapp.network.models.GenreListResponse
-import com.example.moviesapp.network.models.ResponsePopularFilms
+import com.example.moviesapp.data.network.models.ActorsListResponse
+import com.example.moviesapp.data.network.models.FilmDetailsResponse
+import com.example.moviesapp.data.network.models.GenreListResponse
+import com.example.moviesapp.data.network.models.ResponsePopularFilms
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

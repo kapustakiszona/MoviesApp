@@ -1,8 +1,8 @@
-package com.example.moviesapp.network.models
+package com.example.moviesapp.data.network.models
 
-import com.example.moviesapp.localdb.entities.FilmEntity
+import com.example.moviesapp.data.localdb.entities.FilmEntity
 import com.example.moviesapp.models.Film
-import com.example.moviesapp.network.Util
+import com.example.moviesapp.data.network.Util
 
 data class FilmItemFromNetwork(
     val adult: Boolean?,

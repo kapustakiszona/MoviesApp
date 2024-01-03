@@ -1,7 +1,7 @@
-package com.example.moviesapp.localdb.dao
+package com.example.moviesapp.data.localdb.dao
 
 import androidx.room.*
-import com.example.moviesapp.localdb.entities.GenreEntity
+import com.example.moviesapp.data.localdb.entities.GenreEntity
 import com.example.moviesapp.models.Chip
 
 @Dao
