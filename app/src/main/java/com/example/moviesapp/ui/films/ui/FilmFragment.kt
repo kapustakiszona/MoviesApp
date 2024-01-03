@@ -4,7 +4,6 @@ package com.example.moviesapp.ui.films.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -103,7 +102,6 @@ class FilmFragment : Fragment() {
     }
 
     private fun showEmptyListPlaceholder(filmList: List<Film>) {
-        Log.d("OOOOOO", "showEmptyListPlaceholder: ${filmList.isEmpty()} ")
         binding.placeholderTv.isGone = filmList.isNotEmpty()
     }
 
