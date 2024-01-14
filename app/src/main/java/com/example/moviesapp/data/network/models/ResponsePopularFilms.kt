@@ -5,8 +5,8 @@ import com.example.moviesapp.models.Film
 
 data class ResponsePopularFilms(
     val results: List<FilmItemFromNetwork>?,
-    override val error: String?,
-    ) : NetworkError {
+    val error: String?,
+    )  {
     fun toFilmList(): List<Film> {
         return results.orEmpty().map {
             it.toFilm()

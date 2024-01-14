@@ -1,20 +1,21 @@
 package com.example.moviesapp.data.network.models
 
 import com.example.moviesapp.models.Actor
+import com.google.gson.annotations.SerializedName
 
 data class ActorsListResponse(
     val cast: List<Cast>?,
-    override val error: String?,
-) : NetworkError {
+    val error: String?,
+) {
 
     data class Cast(
         val name: String,
-        val profile_path: String
+        @SerializedName("profile_path") val profilePath: String
     ) {
         fun toActor(): Actor =
             Actor(
                 name = name,
-                image = profile_path
+                image = profilePath
             )
     }
 

@@ -1,40 +1,41 @@
 package com.example.moviesapp.data.network.models
 
 import com.example.moviesapp.data.localdb.entities.FilmEntity
-import com.example.moviesapp.models.Film
 import com.example.moviesapp.data.network.Util
+import com.example.moviesapp.models.Film
+import com.google.gson.annotations.SerializedName
 
 data class FilmItemFromNetwork(
     val adult: Boolean?,
-    val genre_ids: List<Int>?,
+    @SerializedName("genre_ids") val genreIds: List<Int>?,
     val id: Int?,
     val overview: String?,
-    val poster_path: String?,
-    val release_date: String?,
+    @SerializedName("poster_path") val posterPath: String?,
+    @SerializedName("release_date") val releaseDate: String?,
     val title: String?,
-    val vote_average: Double?,
+    @SerializedName("vote_average") val voteAverage: Double?,
 ) {
     fun toFilm(): Film =
         Film(
             id = id ?: 0,
             name = title.orEmpty(),
-            date_publication = release_date.orEmpty(),
+            date_publication = releaseDate.orEmpty(),
             description = overview.orEmpty(),
-            genre_id = genre_ids.orEmpty().firstOrNull(),
-            photo = poster_path.orEmpty(),
-            rating = (vote_average ?: 0.0).div(2).toFloat(),
+            genre_id = genreIds.orEmpty().firstOrNull(),
+            photo = posterPath.orEmpty(),
+            rating = (voteAverage ?: 0.0).div(2).toFloat(),
             adult = Util.getAdultOrNot(adult == true)
         )
 
     fun toFilmEntity(): FilmEntity = FilmEntity(
         id = id ?: 0,
         name = title.orEmpty(),
-        datePublication = release_date.orEmpty(),
+        datePublication = releaseDate.orEmpty(),
         adult = Util.getAdultOrNot(adult == true),
-        rating = (vote_average ?: 0.0).div(2).toFloat(),
+        rating = (voteAverage ?: 0.0).div(2).toFloat(),
         description = overview.orEmpty(),
-        photo = poster_path.orEmpty(),
-        genreIds = genre_ids.orEmpty().firstOrNull(),
+        photo = posterPath.orEmpty(),
+        genreIds = genreIds.orEmpty().firstOrNull(),
         genreName = ""
     )
 }

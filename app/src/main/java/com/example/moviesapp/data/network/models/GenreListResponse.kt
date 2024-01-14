@@ -4,8 +4,8 @@ import com.example.moviesapp.models.Chip
 
 data class GenreListResponse(
     val genres: List<Genre>?,
-    override val error: String?,
-) : NetworkError {
+    val error: String?,
+) {
     data class Genre(
         val id: Int,
         val name: String

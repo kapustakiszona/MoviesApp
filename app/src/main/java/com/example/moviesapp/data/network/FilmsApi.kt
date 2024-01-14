@@ -52,9 +52,9 @@ class FilmsApi @Inject constructor(private val filmsService: FilmsService) {
                 adult = null,
                 genres = null,
                 overview = null,
-                poster_path = null,
-                release_date = null,
-                vote_average = null,
+                posterPath = null,
+                releaseDate = null,
+                voteAverage = null,
                 error = exc.message
             )
         }
